@@ -1,13 +1,12 @@
 // ** MUI Imports
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 
 // ** Custom Components Imports
-import { Icon } from '@iconify/react'
-import { Button } from '@mui/material'
 
 const CardMenu = props => {
   // ** Vars
@@ -15,14 +14,13 @@ const CardMenu = props => {
 
   return (
     <Card sx={{ overflow: 'visible', position: 'relative' }} variant="outlined">
-      <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
-        <Button size='medium' startIcon={<Icon icon={icon} fontSize={20} />}>
-          {desc}
-        </Button>
+      <div class='cardHeader'>
+        <span class='cardHeaderTitle'>{desc}</span>
+      </div>
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', minHeight: '185px'}}>
         <Box
           sx={{
-            display: 'contents',
-            minHeight: '120px'
+            display: 'contents'
           }}
         >
           {subModule
@@ -35,6 +33,7 @@ const CardMenu = props => {
               })
             : null}
         </Box>
+        <Button size="small">Learn more</Button>
       </CardContent>
     </Card>
   )
