@@ -3,51 +3,40 @@ import Link from 'next/link'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import TextField from '@mui/material/TextField'
+import { Button, Typography } from '@mui/material'
 
 const TableHeader = props => {
   // ** Props
-  const { value, selectedRows, handleFilter } = props
+  const { selectedRows, handleClick, itemList } = props
 
   return (
     <Box
       sx={{
         p: 5,
-        pb: 3,
+        pb: `${selectedRows?.length > 0 ? 3 : 5}`,
         width: '100%',
         display: 'flex',
         flexWrap: 'wrap',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'flex-start'
       }}
     >
-      <Select
-        size='small'
-        displayEmpty
-        defaultValue=''
-        sx={{ mr: 4, mb: 2 }}
-        disabled={selectedRows && selectedRows.length === 0}
-        renderValue={selected => (selected.length === 0 ? 'Actions' : selected)}
-      >
-        <MenuItem disabled>Actions</MenuItem>
-        <MenuItem value='Delete'>Delete</MenuItem>
-        <MenuItem value='Edit'>Edit</MenuItem>
-        <MenuItem value='Send'>Send</MenuItem>
-      </Select>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
-        <TextField
-          size='small'
-          value={value}
-          sx={{ mr: 4, mb: 2 }}
-          placeholder='Search Invoice'
-          onChange={e => handleFilter(e.target.value)}
-        />
-        <Button sx={{ mb: 2 }} component={Link} variant='contained' href='/apps/invoice/add'>
-          Create Invoice
-        </Button>
+        {itemList?.length > 0 && (
+          <Button disabled={selectedRows?.length > 0 ? false : true} variant='contained' onClick={handleClick}>
+            Edit Selected {selectedRows?.length > 0 ? `${selectedRows?.length} ITEM/S ` : ''}
+          </Button>
+        )}
+        {itemList?.length <= 0 && (
+          <>
+            <Typography variant='body2'>
+              There are not items added yet. Use the Add Item or Add from template options.
+            </Typography>
+          </>
+        )}
       </Box>
     </Box>
   )

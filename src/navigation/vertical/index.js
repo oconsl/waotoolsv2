@@ -1,6 +1,19 @@
 const navigation = () => {
   return [
     {
+      title: 'Home',
+      icon: 'mdi:home-outline',
+      path: '/'
+    },
+    {
+      title: 'Planner',
+      icon: 'arcticons:school-planner',
+      path: '/planner'
+    },
+    {
+      sectionTitle: 'Template Menus'
+    },
+    {
       title: 'Dashboards',
       icon: 'mdi:home-outline',
       badgeContent: 'new',
@@ -346,7 +359,6 @@ const navigation = () => {
       icon: 'mdi:google-circles-extended'
     },
     {
-      
       title: 'Cards',
       icon: 'mdi:credit-card-outline',
       children: [
@@ -461,7 +473,7 @@ const navigation = () => {
         {
           title: 'More',
           path: '/components/more'
-        },
+        }
       ]
     },
     {
@@ -522,7 +534,7 @@ const navigation = () => {
         {
           title: 'Input Mask',
           path: '/forms/form-elements/input-mask'
-        },
+        }
       ]
     },
     {
