@@ -8,6 +8,7 @@ A webapp designed to make your journey through WaO less painful, giving you the 
 ## Authors
 
 - [@onare](https://www.github.com/onare)
+- [@dvdvgt](https://www.github.com/deborahvandervegt)
 
 
 ## Installation
