@@ -2,7 +2,6 @@
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
-import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 
@@ -13,9 +12,9 @@ const CardMenu = props => {
   const { desc, icon, src, subModule, text } = props.data
 
   return (
-    <Card sx={{ overflow: 'visible', position: 'relative' }} variant="outlined">
-      <div class='cardHeader'>
-        <span class='cardHeaderTitle'>{desc}</span>
+    <Card sx={{ overflow: 'visible', position: 'relative' }}>
+      <div className='cardHeader'>
+        <span className='cardHeaderTitle'>{desc}</span>
       </div>
       <CardContent sx={{ display: 'flex', flexDirection: 'column', minHeight: '185px'}}>
         <Box
