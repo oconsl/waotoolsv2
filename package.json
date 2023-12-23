@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 8080",
-    "build": "next build && next export",
+    "build": "next build",
     "start": "next start",
     "export": "next export",
     "lint": "eslint --fix \"src/**/*.{js,jsx}\"",
@@ -48,6 +48,7 @@
     "clsx": "1.2.1",
     "date-fns": "2.30.0",
     "draft-js": "0.11.7",
+    "firebase": "^10.7.1",
     "i18next": "22.4.15",
     "i18next-browser-languagedetector": "7.0.1",
     "i18next-http-backend": "2.2.0",

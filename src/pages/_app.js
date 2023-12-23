@@ -1,3 +1,6 @@
+// ** React Imports
+import { useEffect } from 'react'
+
 // ** Next Imports
 import Head from 'next/head'
 import { Router } from 'next/router'
@@ -16,6 +19,7 @@ import { CacheProvider } from '@emotion/react'
 import { defaultACLObj } from 'src/configs/acl'
 import 'src/configs/i18n'
 import themeConfig from 'src/configs/themeConfig'
+import { app, analytics, db } from 'src/utils/firebaseInit'
 
 // ** Fake-DB Import
 import 'src/@fake-db'
@@ -50,9 +54,11 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 import 'src/iconify-bundle/icons-bundle-react'
 
 // ** Global css styles
-import '../../styles/globals.scss'
+import '../../styles/globals.css'
 
 const clientSideEmotionCache = createEmotionCache()
+
+// logEvent(analytics, 'notification_received')
 
 // ** Pace Loader
 if (themeConfig.routingLoader) {
@@ -91,6 +97,10 @@ const App = props => {
   const authGuard = Component.authGuard ?? true
   const guestGuard = Component.guestGuard ?? false
   const aclAbilities = Component.acl ?? defaultACLObj
+
+  useEffect(() => {
+    analytics
+  }, [])
 
   return (
     <Provider store={store}>

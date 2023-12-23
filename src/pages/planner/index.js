@@ -133,23 +133,6 @@ const CustomBox = styled(Box)(({ theme }) => ({
 }))
 
 // ** Variables
-// ** renders client column
-const renderClient = row => {
-  if (row.avatar.length) {
-    return <CustomAvatar src={row.avatar} sx={{ mr: 3, width: '1.875rem', height: '1.875rem' }} />
-  } else {
-    return (
-      <CustomAvatar
-        skin='light'
-        color={row.avatarColor || 'primary'}
-        sx={{ mr: 3, fontSize: '.8rem', width: '1.875rem', height: '1.875rem' }}
-      >
-        {getInitials(row.name || 'John Doe')}
-      </CustomAvatar>
-    )
-  }
-}
-
 const defaultColumns = [
   // {
   //   flex: 0.1,
@@ -339,7 +322,6 @@ const Planner = () => {
   const [showAddTempAzurite, setShowAddtempAzurite] = useState(0)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
   const hideText = useMediaQuery(theme => theme.breakpoints.down('sm'))
-
   const [planInfo, setPlanInfo] = useState(defaultInfo)
 
   // ** Hooks
@@ -685,7 +667,7 @@ const Planner = () => {
                     size='small'
                     variant='outlined'
                     type='number'
-                    value={planInfo?.azuCalculator.mineHour}
+                    value={planInfo?.azuCalculator?.mineHour}
                     inputProps={{
                       min: 0,
                       max: 20000
@@ -707,7 +689,7 @@ const Planner = () => {
                     size='small'
                     variant='outlined'
                     select
-                    value={planInfo?.azuCalculator.rcLevel}
+                    value={planInfo?.azuCalculator?.rcLevel}
                     inputProps={{
                       min: 1,
                       max: 10
@@ -749,7 +731,7 @@ const Planner = () => {
                     size='small'
                     variant='outlined'
                     type='number'
-                    value={planInfo?.azuCalculator.packs}
+                    value={planInfo?.azuCalculator?.packs}
                     inputProps={{
                       min: 0,
                       max: 20000
@@ -772,7 +754,7 @@ const Planner = () => {
                     variant='outlined'
                     type='number'
                     select
-                    value={planInfo?.azuCalculator.chests}
+                    value={planInfo?.azuCalculator?.chests}
                     inputProps={{
                       min: 1,
                       max: 5
@@ -799,7 +781,7 @@ const Planner = () => {
                       </Typography>
                     </div>
                     <Typography variant='h6' color='textPrimary' align='center' style={{ marginLeft: '10px' }}>
-                      {planInfo?.azuCalculator.total.toLocaleString()}
+                      {planInfo?.azuCalculator?.total.toLocaleString()}
                     </Typography>
                   </div>
                   <div>
@@ -809,7 +791,7 @@ const Planner = () => {
                       </Typography>
                     </div>
                     <Typography variant='h6' color='textPrimary' align='center' style={{ marginLeft: '10px' }}>
-                      {(planInfo?.azuCalculator.total * 7).toLocaleString()}
+                      {(planInfo?.azuCalculator?.total * 7).toLocaleString()}
                     </Typography>
                   </div>
                   <div>
@@ -819,28 +801,9 @@ const Planner = () => {
                       </Typography>
                     </div>
                     <Typography variant='h6' color='textPrimary' align='center' style={{ marginLeft: '10px' }}>
-                      {(planInfo?.azuCalculator.total * 30).toLocaleString()}
+                      {(planInfo?.azuCalculator?.total * 30).toLocaleString()}
                     </Typography>
                   </div>
-                  {planInfo?.azuCalculator.needed > 0 &&
-                    planInfo?.azuCalculator.needed > planInfo?.azuCalculator.owned &&
-                    planInfo?.azuCalculator.total > 0 && (
-                      <div>
-                        <div style={{ minWidth: '200px' }}>
-                          <Typography variant='body2' color='primary' align='center' style={{ marginLeft: '10px' }}>
-                            Days needed to complete missing azurite (Needed - owned)/Daily output:
-                          </Typography>
-                        </div>
-                        <Typography variant='body2' color='textPrimary' align='center' style={{ marginLeft: '10px' }}>
-                          {Math.round(
-                            (planInfo?.azuCalculator.needed - planInfo?.azuCalculator.owned) /
-                              planInfo?.azuCalculator.total
-                          ).toLocaleString()}
-                          d to get {(planInfo?.azuCalculator.needed - planInfo?.azuCalculator.owned).toLocaleString()}{' '}
-                          azurite.
-                        </Typography>
-                      </div>
-                    )}
                 </div>
               </Paper>
             </Grid>
@@ -1397,7 +1360,7 @@ const Planner = () => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Card>
-            <CustomHeader title='BUILDING AND TECHNOLOGY PLANNER' />
+            <CustomHeader icon='planner' title='BUILDING AND TECHNOLOGY PLANNER' />
             <Divider />
             <Grid container spacing={6} sx={{ padding: '1rem' }}>
               <Grid item xs={12} sm={6}>
