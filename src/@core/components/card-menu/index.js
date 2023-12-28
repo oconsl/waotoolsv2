@@ -12,10 +12,29 @@ const CardMenu = props => {
   const { desc, icon, src, subModule, text } = props.data
 
   return (
-    <Card sx={{ overflow: 'visible', position: 'relative' }}>
-      <div className='cardHeader'>
-        <span className='cardHeaderTitle'>{desc}</span>
-      </div>
+    <Card 
+      sx={{ 
+        overflow: 'visible', 
+        position: 'relative'
+      }}
+      >
+      <Box className='cardHeader'
+        sx={{
+          backgroundColor: 'customColors.skyPalettePrimary',
+          height: '60px'
+        }}
+      >
+        <Typography className='cardHeaderTitle' color="customColors.skyPaletteTitle" 
+          sx={{
+            textAlign: 'center',
+            width: '100%',
+            display: 'block',
+            paddingTop: '10%',
+            textTransform: 'uppercase',
+            fontWeight: '500'
+          }}
+        >{desc}</Typography>
+      </Box>
       <CardContent sx={{ display: 'flex', flexDirection: 'column', minHeight: '185px'}}>
         <Box
           sx={{
@@ -32,7 +51,18 @@ const CardMenu = props => {
               })
             : null}
         </Box>
-        <Button size="small">Learn more</Button>
+        <Button 
+          size="small"
+          sx={{
+            textAlign: 'left',
+            marginLeft: '-10px',
+            display: 'block',
+            marginRight: '-10px',
+            marginTop: '15px',
+            position: 'absolute',
+            bottom: '10px'
+          }}
+        >Learn more</Button>
       </CardContent>
     </Card>
   )

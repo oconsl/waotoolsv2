@@ -1,56 +1,11 @@
 // SCSS Stylesheet
 html,
 body {
-
-  // Homepage Sky Palette
-  $sky-palette-primary: #0278AE;
-  $sky-palette-secondary: #51ADCF;
-  $sky-palette-tertiary: #A5ECD7;
-  $sky-palette-quaternary: #E8FFC1;
-  $sky-palette-title: #04364A;
-
   main {
 
     .MuiGrid-item {
       .MuiPaper-rounded{
         overflow: hidden;
-
-        button {
-          text-align: left;
-          margin-left: -10px;
-          display: block;
-          margin-right: -10px;
-          margin-top: 15px;
-          position: absolute;
-          bottom: 10px;
-        }
-      }
-
-      .cardHeader {
-        background-color: $sky-palette-primary;
-        height: 60px;
-
-        .cardHeaderTitle {
-          text-align: center;
-          width: 100%;
-          display: block;
-          padding-top: 10%;
-          text-transform: uppercase;
-          font-weight: 500;
-          color: $sky-palette-title;
-        }
-      }
-
-      &:nth-child(2n) .cardHeader {
-        background-color: $sky-palette-secondary;
-      }
-
-      &:nth-child(3n) .cardHeader {
-        background-color: $sky-palette-tertiary;
-      }
-
-      &:nth-child(4n) .cardHeader {
-        background-color: $sky-palette-quaternary;
       }
     }
     

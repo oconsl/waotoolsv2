@@ -42,7 +42,12 @@ const DefaultPalette = (mode, skin, themeColor) => {
       avatarBg: mode === 'light' ? '#F0EFF0' : '#3F3B59',
       darkBg: skin === 'bordered' ? '#312D4B' : '#28243D',
       lightBg: skin === 'bordered' ? whiteColor : '#F4F5FA',
-      tableHeaderBg: mode === 'light' ? '#F9FAFC' : '#3D3759'
+      tableHeaderBg: mode === 'light' ? '#F9FAFC' : '#3D3759',
+      skyPalettePrimary: '#0278AE',
+      skyPaletteSecondary: '#51ADCF',
+      skyPaletteTertiary: '#A5ECD7',
+      skyPaletteQuaternary: '#E8FFC1',
+      skyPaletteTitle: '#04364A'
     },
     mode: mode,
     common: {
