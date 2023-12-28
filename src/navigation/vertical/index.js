@@ -11,6 +11,11 @@ const navigation = () => {
       path: '/planner'
     },
     {
+      title: 'Azurite',
+      icon: 'game-icons:crystal-growth',
+      path: '/azurite'
+    },
+    {
       sectionTitle: 'Template Menus'
     },
     {
