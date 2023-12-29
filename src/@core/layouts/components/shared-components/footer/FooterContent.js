@@ -18,8 +18,8 @@ const FooterContent = () => {
 
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
-      <Typography sx={{ mr: 2 }}>
-        {`Made by `}
+      {/* <Typography sx={{ mr: 2 }}>
+        {`Created by `}
         <LinkStyled target='_blank' href='https://github.com/onare'>
           oNare
         </LinkStyled>
@@ -27,8 +27,19 @@ const FooterContent = () => {
         <LinkStyled target='_blank' href='https://github.com/DvdVgt'>
           DvdVgt
         </LinkStyled>
-      </Typography>
-      {hidden ? null : (
+      </Typography> */}
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', '& :not(:last-child)': { mr: 4 } }}>
+        <LinkStyled target='_blank' href='https://www.paypal.com/paypalme/oNaare'>
+          Donate
+        </LinkStyled>
+        <LinkStyled
+          target='_blank'
+          href='https://docs.google.com/spreadsheets/d/1xm6xgMbUCUfuFLibFPYWBFKyitfCr20KPvIl7l-OtAo/edit#gid=1888561516'
+        >
+          Contribute
+        </LinkStyled>
+      </Box>
+      {/* {hidden ? null : (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', '& :not(:last-child)': { mr: 4 } }}>
           <LinkStyled
             target='_blank'
@@ -40,7 +51,7 @@ const FooterContent = () => {
             Donate
           </LinkStyled>
         </Box>
-      )}
+      )} */}
     </Box>
   )
 }

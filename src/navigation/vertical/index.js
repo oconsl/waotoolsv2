@@ -1,6 +1,9 @@
 const navigation = () => {
   return [
     {
+      sectionTitle: 'onare #1286'
+    },
+    {
       title: 'Home',
       icon: 'mdi:home-outline',
       path: '/'
@@ -14,6 +17,11 @@ const navigation = () => {
       title: 'Azurite',
       icon: 'game-icons:crystal-growth',
       path: '/azurite'
+    },
+    {
+      title: 'Troops',
+      icon: 'game-icons:rally-the-troops',
+      path: '/troops'
     },
     {
       sectionTitle: 'Template Menus'

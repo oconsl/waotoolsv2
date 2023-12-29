@@ -195,7 +195,7 @@ const AzuriteCalculator = props => {
                     size='small'
                     variant='outlined'
                     type='number'
-                    value={azuCalculator.mineHour}
+                    value={azuCalculator.mineHour > 0 ? azuCalculator.mineHour : ''}
                     inputProps={{
                       min: 0,
                       max: 20000
@@ -283,7 +283,7 @@ const AzuriteCalculator = props => {
                     size='small'
                     variant='outlined'
                     type='number'
-                    value={azuCalculator.packs}
+                    value={azuCalculator.packs > 0 ? azuCalculator.packs : ''}
                     inputProps={{
                       min: 0,
                       max: 20000
@@ -342,7 +342,7 @@ const AzuriteCalculator = props => {
                     size='small'
                     variant='outlined'
                     type='number'
-                    value={azuCalculator.owned}
+                    value={azuCalculator.owned > 0 ? azuCalculator.owned : ''}
                     inputProps={{
                       min: 0,
                       max: 999999
@@ -364,7 +364,7 @@ const AzuriteCalculator = props => {
                     size='small'
                     variant='outlined'
                     type='number'
-                    value={azuCalculator.needed}
+                    value={azuCalculator.needed > 0 ? azuCalculator.needed : ''}
                     inputProps={{
                       min: 0,
                       max: 999999

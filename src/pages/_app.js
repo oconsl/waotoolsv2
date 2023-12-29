@@ -106,7 +106,7 @@ const App = props => {
     <Provider store={store}>
       <CacheProvider value={emotionCache}>
         <Head>
-          <title>{`${themeConfig.templateName} - Making your War and Order path easier`}</title>
+          <title>{`WAO Tools V2 - Making your War and Order path easier`}</title>
           <meta name='description' content={`${themeConfig.templateName} is a War and Order compilation of tools.`} />
           <meta name='keywords' content='war and order, wao, waotools, war and order game' />
           <meta name='viewport' content='initial-scale=1, width=device-width' />

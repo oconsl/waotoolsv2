@@ -22,6 +22,13 @@ export const menuList = [
     subModule: [{ name: '- Angel Dust Calculator' }]
   },
   {
+    text: 'troops',
+    desc: 'Troops',
+    src: '/images/cards/pose_f9.png',
+    icon: 'game-icons:rally-the-troops',
+    subModule: [{ name: '- Troops setup' }, { name: '- Troops Layouts' }]
+  },
+  {
     text: 'artifact',
     desc: 'Artifacts',
     src: '/images/cards/pose_f9.png',
@@ -125,5 +132,12 @@ export const menuList = [
     src: '/images/cards/pose_f9.png',
     icon: 'mdi:help-outline',
     subModule: [{ name: '- Creator' }, { name: '- Contributors' }, { name: '- Supporters' }]
+  },
+  {
+    text: 'troops',
+    desc: 'Troops Setup',
+    src: '/images/cards/pose_f9.png',
+    icon: 'game-icons:rally-the-troops',
+    subModule: [{ name: '- Troops Templates' }, { name: '- Troops Configuration' }]
   }
 ]
