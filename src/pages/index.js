@@ -14,7 +14,14 @@ const Home = () => {
       <Grid container spacing={6}>
         {menuList.map(menu => {
           return (
-            <Grid key={menu.desc} item xs={12} sm={6} md={2} sx={{ pt: theme => `${theme.spacing(12.25)} !important` }}>
+            <Grid key={menu.desc} item xs={12} sm={6} md={2} 
+              sx={{ 
+                pt: theme => `${theme.spacing(12.25)} !important`,
+                "&:nth-child(2n) .cardHeader": { backgroundColor: 'customColors.skyPaletteSecondary' },
+                "&:nth-child(3n) .cardHeader": { backgroundColor: 'customColors.skyPaletteTertiary' },
+                "&:nth-child(4n) .cardHeader": { backgroundColor: 'customColors.skyPaletteQuaternary' }
+              }}
+            >
               <CardMenu data={menu} />
             </Grid>
           )

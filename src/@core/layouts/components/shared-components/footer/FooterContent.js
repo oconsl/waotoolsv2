@@ -5,7 +5,6 @@ import Link from 'next/link'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
-import useMediaQuery from '@mui/material/useMediaQuery'
 
 const LinkStyled = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
@@ -24,7 +23,7 @@ const FooterContent = () => {
           oNare
         </LinkStyled>
         {` | `}
-        <LinkStyled target='_blank' href='https://github.com/DvdVgt'>
+        <LinkStyled target='_blank' href='https://github.com/deborahvandervegt'>
           DvdVgt
         </LinkStyled>
       </Typography> */}
