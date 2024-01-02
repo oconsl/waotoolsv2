@@ -1,5 +1,6 @@
 // ** React Imports
 import { useState, useEffect, forwardRef } from 'react'
+import PropTypes from 'prop-types'
 
 // ** Next Import
 import Link from 'next/link'
@@ -15,6 +16,7 @@ import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import MuiTabList from '@mui/lab/TabList'
+import LinearProgress from '@mui/material/LinearProgress'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
@@ -121,6 +123,27 @@ const defaultBeastInfo = {
   userTalents: 0
 }
 
+function LinearProgressWithLabel(props) {
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ width: '100%', mr: 1 }}>
+        <LinearProgress color='success' variant='determinate' {...props} />
+      </Box>
+      <Box sx={{ minWidth: 35 }}>
+        <Typography variant='body2' color='text.secondary'>{`${Math.round(props.value)}%`}</Typography>
+      </Box>
+    </Box>
+  )
+}
+
+LinearProgressWithLabel.propTypes = {
+  /**
+   * The value of the progress indicator for the determinate and buffer variants.
+   * Value between 0 and 100.
+   */
+  value: PropTypes.number.isRequired
+}
+
 /* eslint-enable */
 const Beast = () => {
   // ** State
@@ -131,11 +154,12 @@ const Beast = () => {
   const beastSkillList = beastSkills.beastSkillList
   const [slotLevel, setSlotLevel] = useState(beastSkills.slots)
   const [skillTemplate, setSkillTemplate] = useState('')
+  const [progress, setProgress] = useState(0)
 
   const [snackOpen, setSnackOpen] = useState({ open: false })
 
   const [totalAvailablePoints, setTotalAvailablePoints] = useState(
-    dataOptions
+    [...dataOptions]
       .filter(o => o.beast === 'all' || o.beast === 'any' || o.beast === beastInfo.beast)
       .map(o => o.levels)
       .map(od => {
@@ -159,10 +183,25 @@ const Beast = () => {
     if (saved) {
       setBeastInfo(saved)
     } else {
-      setBeastInfo({ ...defaultBeastInfo })
+      const newOptions = [...dataOptions].filter(
+        o => o.beast === 'all' || o.beast === 'any' || o.beast === defaultBeastInfo.beast
+      )
+      setBeastInfo({ ...defaultBeastInfo, options: newOptions })
     }
     setIsLoading(false)
   }, [])
+
+  useEffect(() => {
+    let totalCompleted = 0
+
+    if (beastInfo.userTalents > 0) {
+      totalCompleted = 100 - ((beastInfo.userTalents - totalPoints) / beastInfo.userTalents) * 100
+    } else {
+      totalCompleted = 100 - ((totalAvailablePoints - totalPoints) / totalAvailablePoints) * 100
+    }
+
+    setProgress(totalCompleted)
+  }, [totalPoints, totalAvailablePoints, beastInfo.userTalents])
 
   const handleChange = (event, value) => {
     setActiveTab(value)
@@ -419,7 +458,9 @@ const Beast = () => {
   }
 
   const handleFillAll = e => {
-    const newState = beastInfo.options?.map(obj => {
+    const defaultBeast = beastInfo.beast ?? defaultBeastInfo.beast
+
+    const newState = [...beastInfo.options]?.map(obj => {
       return {
         ...obj,
         counter: obj.maxCounter,
@@ -429,7 +470,7 @@ const Beast = () => {
     })
 
     const totalPoints = newState
-      .filter(o => o.beast === 'all' || o.beast === 'any' || o.beast === beastInfo.beast)
+      .filter(o => o.beast === 'all' || o.beast === 'any' || o.beast === defaultBeast)
       .map(o => o.levels)
       .map(od => {
         return od.reduce((accumulator, currentValue) => accumulator + currentValue.points, 0)
@@ -687,7 +728,7 @@ const Beast = () => {
                     </Box>
                   </Box>
                   <Divider light>TREE</Divider>
-                  <Box>
+                  <Box sx={{ minWidth: `${hideText ? '1px' : '520px'}` }}>
                     {beastInfo.options.map(opt => {
                       if (
                         opt.type === 1 &&
@@ -704,15 +745,15 @@ const Beast = () => {
                               </>
                             )}
                             <Grid container>
-                              <Grid key={`${opt.row}-col1_empty`} item xs={4} sm={3}></Grid>
-                              <Grid key={`${opt.row}-col1`} item xs={4} sm={6} sx={{ padding: '1.5rem' }}>
+                              <Grid key={`${opt.row}-col1_empty`} item xs={3} sm={3}></Grid>
+                              <Grid key={`${opt.row}-col1`} item xs={6} sm={6} sx={{ padding: '0.5rem' }}>
                                 <Paper
                                   elevation={24}
                                   sx={{
                                     display: 'flex',
                                     flexDirection: 'row',
                                     justifyContent: 'center',
-                                    width: '200px'
+                                    width: `${hideText ? '150px' : '200px'}`
                                   }}
                                   key={`${opt.row}-col1-paper`}
                                 >
@@ -886,7 +927,7 @@ const Beast = () => {
                                             <AddToPhotos />{' '}
                                           </Button>
                                         </Tooltip>
-                                        {opt.row !== 'A' && (
+                                        {opt.row !== 'A' && !hideText && (
                                           <Tooltip title={'Add prerequisites for this skill.'}>
                                             <Button
                                               variant='contained'
@@ -903,12 +944,39 @@ const Beast = () => {
                                           </Tooltip>
                                         )}
                                       </ButtonGroup>
+                                      {opt.row !== 'A' && hideText && (
+                                        <ButtonGroup
+                                          color='primary'
+                                          size='small'
+                                          sx={{
+                                            marginTop: '5px',
+                                            minHeight: '32px',
+                                            minWidth: '48px'
+                                          }}
+                                        >
+                                          <Tooltip title={'Add prerequisites for this skill.'}>
+                                            <Button
+                                              variant='contained'
+                                              aria-label='add-dependencies'
+                                              size='small'
+                                              color='primary'
+                                              disabled={false}
+                                              onClick={e => {
+                                                handlePrerequisiteFill(opt.row, 1)
+                                              }}
+                                              sx={{ minHeight: '32px', minWidth: '48px' }}
+                                            >
+                                              {<AccountTree fontSize='inherit' />}
+                                            </Button>
+                                          </Tooltip>
+                                        </ButtonGroup>
+                                      )}
                                     </Box>
                                   </Box>
                                 </Paper>
                               </Grid>
 
-                              <Grid key={`${opt.row}-col2_empty`} item xs={4} sm={3}></Grid>
+                              <Grid key={`${opt.row}-col2_empty`} item xs={3} sm={3}></Grid>
                             </Grid>
 
                             <Divider light />
@@ -923,14 +991,14 @@ const Beast = () => {
                           <>
                             <Grid container>
                               {/* LEFT */}
-                              <Grid key={`${opt.row}-col1`} item xs={4} sm={4} sx={{ padding: '1.5rem' }}>
+                              <Grid key={`${opt.row}-col1`} item xs={6} lg={5} md={5} sm={6} sx={{ padding: '0.5rem' }}>
                                 <Paper
                                   elevation={24}
                                   sx={{
                                     display: 'flex',
                                     flexDirection: 'row',
                                     justifyContent: 'center',
-                                    width: '200px'
+                                    width: `${hideText ? '150px' : '200px'}`
                                   }}
                                   key={`${opt.row}-col1-paper`}
                                 >
@@ -1087,36 +1155,65 @@ const Beast = () => {
                                             <AddToPhotos />{' '}
                                           </Button>
                                         </Tooltip>
-                                        <Tooltip title={'Add prerequisites for this skill.'}>
-                                          <Button
-                                            variant='contained'
-                                            aria-label='add-dependencies'
-                                            size='small'
-                                            color='primary'
-                                            disabled={false}
-                                            onClick={e => {
-                                              handlePrerequisiteFill(opt.row, 1)
-                                            }}
-                                          >
-                                            {<AccountTree fontSize='inherit' />}
-                                          </Button>
-                                        </Tooltip>
+                                        {!hideText && (
+                                          <Tooltip title={'Add prerequisites for this skill.'}>
+                                            <Button
+                                              variant='contained'
+                                              aria-label='add-dependencies'
+                                              size='small'
+                                              color='primary'
+                                              disabled={false}
+                                              onClick={e => {
+                                                handlePrerequisiteFill(opt.row, 1)
+                                              }}
+                                            >
+                                              {<AccountTree fontSize='inherit' />}
+                                            </Button>
+                                          </Tooltip>
+                                        )}
                                       </ButtonGroup>
+                                      {hideText && (
+                                        <ButtonGroup
+                                          color='primary'
+                                          size='small'
+                                          sx={{
+                                            marginTop: '5px',
+                                            minHeight: '32px',
+                                            minWidth: '48px'
+                                          }}
+                                        >
+                                          <Tooltip title={'Add prerequisites for this skill.'}>
+                                            <Button
+                                              variant='contained'
+                                              aria-label='add-dependencies'
+                                              size='small'
+                                              color='primary'
+                                              disabled={false}
+                                              onClick={e => {
+                                                handlePrerequisiteFill(opt.row, 1)
+                                              }}
+                                              sx={{ minHeight: '32px', minWidth: '48px' }}
+                                            >
+                                              {<AccountTree fontSize='inherit' />}
+                                            </Button>
+                                          </Tooltip>
+                                        </ButtonGroup>
+                                      )}
                                     </Box>
                                   </Box>
                                 </Paper>
                               </Grid>
                               {/* MIDDLE */}
-                              <Grid key={`${opt.row}-col2_empty`} item xs={4} sm={2}></Grid>
+                              <Grid key={`${opt.row}-col2_empty`} item lg={2} md={2}></Grid>
                               {/* RIGHT */}
-                              <Grid key={`${opt.row}-col2`} item xs={4} sm={4} sx={{ padding: '1.5rem' }}>
+                              <Grid key={`${opt.row}-col2`} item xs={6} lg={5} md={5} sm={6} sx={{ padding: '0.5rem' }}>
                                 <Paper
                                   elevation={24}
                                   sx={{
                                     display: 'flex',
                                     flexDirection: 'row',
                                     justifyContent: 'center',
-                                    width: '200px'
+                                    width: `${hideText ? '150px' : '200px'}`
                                   }}
                                   key={`${opt.row}-col2-paper`}
                                 >
@@ -1285,21 +1382,51 @@ const Beast = () => {
                                             <AddToPhotos />{' '}
                                           </Button>
                                         </Tooltip>
-                                        <Tooltip title={'Add prerequisites for this skill.'}>
-                                          <Button
-                                            variant='contained'
-                                            aria-label='add-dependencies'
-                                            size='small'
-                                            color='primary'
-                                            disabled={false}
-                                            onClick={e => {
-                                              handlePrerequisiteFill(opt.row, 2)
-                                            }}
-                                          >
-                                            {<AccountTree fontSize='inherit' />}
-                                          </Button>
-                                        </Tooltip>
+                                        {!hideText && (
+                                          <Tooltip title={'Add prerequisites for this skill.'}>
+                                            <Button
+                                              variant='contained'
+                                              aria-label='add-dependencies'
+                                              size='small'
+                                              color='primary'
+                                              disabled={false}
+                                              onClick={e => {
+                                                handlePrerequisiteFill(opt.row, 2)
+                                              }}
+                                              sx={{ minHeight: '32px', minWidth: '48px' }}
+                                            >
+                                              {<AccountTree fontSize='inherit' />}
+                                            </Button>
+                                          </Tooltip>
+                                        )}
                                       </ButtonGroup>
+                                      {hideText && (
+                                        <ButtonGroup
+                                          color='primary'
+                                          size='small'
+                                          sx={{
+                                            marginTop: '5px',
+                                            minHeight: '32px',
+                                            minWidth: '48px'
+                                          }}
+                                        >
+                                          <Tooltip title={'Add prerequisites for this skill.'}>
+                                            <Button
+                                              variant='contained'
+                                              aria-label='add-dependencies'
+                                              size='small'
+                                              color='primary'
+                                              disabled={false}
+                                              onClick={e => {
+                                                handlePrerequisiteFill(opt.row, 2)
+                                              }}
+                                              sx={{ minHeight: '32px', minWidth: '48px' }}
+                                            >
+                                              {<AccountTree fontSize='inherit' />}
+                                            </Button>
+                                          </Tooltip>
+                                        </ButtonGroup>
+                                      )}
                                     </Box>
                                   </Box>
                                 </Paper>
@@ -1312,7 +1439,7 @@ const Beast = () => {
                       }
                     })}
                   </Box>
-                  <Divider light>SELECTED TALENTS SKILLS</Divider>
+                  {totalPoints > 0 && <Divider light>SELECTED TALENTS SKILLS</Divider>}
                   <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', maxWidth: '450px' }}>
                     {[...beastInfo.options].map(opt => {
                       if (opt.counter > 0) {
@@ -1356,6 +1483,7 @@ const Beast = () => {
               bottom: 0
             }}
           >
+            <LinearProgressWithLabel value={progress} />
             <Toolbar>
               <Box sx={{ flexGrow: 1 }} />
 
@@ -1503,7 +1631,7 @@ const Beast = () => {
                     {slotLevel?.map((slot, index) => {
                       return (
                         <>
-                          <Grid item xs={6} md={3} lg={3} sx={{ padding: '1.5em' }}>
+                          <Grid item xs={12} md={3} lg={3} sm={12} sx={{ padding: '1.5em' }}>
                             <Paper
                               elevation={24}
                               sx={{
@@ -1622,7 +1750,10 @@ const Beast = () => {
                       )
                     })}
                   </Box>
-                  <Divider>SELECTED SKILLS</Divider>
+                  {(slotLevel[0].skill?.key?.length > 0 ||
+                    slotLevel[1].skill?.key?.length > 0 ||
+                    slotLevel[2].skill?.key?.length > 0 ||
+                    slotLevel[3].skill?.key?.length > 0) && <Divider>SELECTED SKILLS</Divider>}
                   <Box>
                     {slotLevel?.map(opt => {
                       let statDescription = { text: opt?.skill?.info }
