@@ -375,13 +375,6 @@ const Troops = () => {
   const handleCalculatorChange = (e, type, level = undefined) => {
     const enterValue = +e.target.value > 999999 ? 999999 : +e.target.value
 
-    if (troopsInfo?.armySizeLimit > 0 && troopsInfo?.armySizeLimit < usedTroops) {
-      return toast.error(
-        `You already used more troops(${
-          usedTroops - troopsInfo?.armySizeLimit
-        } more) than your configured Army Size Limit.`
-      )
-    }
     const newObj = { ...troopsInfo }
 
     // Updating values
@@ -404,6 +397,16 @@ const Troops = () => {
       setup: setup,
       slots: newTroopsInfo.slots
     })
+  }
+
+  const handleCalculatorBlur = e => {
+    if (troopsInfo?.armySizeLimit > 0 && troopsInfo?.armySizeLimit < usedTroops) {
+      return toast.error(
+        `You already used more troops(${
+          usedTroops - troopsInfo?.armySizeLimit
+        } more) than your configured Army Size Limit.`
+      )
+    }
   }
 
   const handleClearSlots = () => {
@@ -663,11 +666,12 @@ const Troops = () => {
                               variant='outlined'
                               type='number'
                               label='Infantry'
-                              value={troopsInfo.setup['evenInf']}
                               sx={{ maxWidth: '115px' }}
+                              value={troopsInfo.setup['evenInf']}
                               onChange={e => {
                                 handleCalculatorChange(e, 'evenInf')
                               }}
+                              onBlur={handleCalculatorBlur}
                             />
                           </Box>
                         </Box>
@@ -690,8 +694,8 @@ const Troops = () => {
                               variant='outlined'
                               select
                               label='Tier'
-                              value={troopsInfo.setup['evenMageTier']}
                               sx={{ maxWidth: '60px' }}
+                              value={troopsInfo.setup['evenMageTier']}
                               onChange={e => {
                                 handleCalculatorChange(e, 'evenMageTier')
                               }}
@@ -713,6 +717,7 @@ const Troops = () => {
                               onChange={e => {
                                 handleCalculatorChange(e, 'evenMage')
                               }}
+                              onBlur={handleCalculatorBlur}
                             />
                           </Box>
 
@@ -723,9 +728,9 @@ const Troops = () => {
                               size='small'
                               variant='outlined'
                               label='Tier'
-                              value={troopsInfo.setup['evenArcherTier']}
                               select
                               sx={{ maxWidth: '60px' }}
+                              value={troopsInfo.setup['evenArcherTier']}
                               onChange={e => {
                                 handleCalculatorChange(e, 'evenArcherTier')
                               }}
@@ -742,11 +747,12 @@ const Troops = () => {
                               variant='outlined'
                               type='number'
                               label='Archers'
-                              value={troopsInfo.setup['evenArcher']}
                               sx={{ maxWidth: '115px' }}
+                              value={troopsInfo.setup['evenArcher']}
                               onChange={e => {
                                 handleCalculatorChange(e, 'evenArcher')
                               }}
+                              onBlur={handleCalculatorBlur}
                             />
                           </Box>
                         </Box>
@@ -800,11 +806,12 @@ const Troops = () => {
                               variant='outlined'
                               type='number'
                               label='Infantry'
-                              value={troopsInfo.setup['oddInf']}
                               sx={{ maxWidth: '115px' }}
+                              value={troopsInfo.setup['oddInf']}
                               onChange={e => {
                                 handleCalculatorChange(e, 'oddInf')
                               }}
+                              onBlur={handleCalculatorBlur}
                             />
                           </Box>
                           <Box sx={{ padding: '0.3em' }}>
@@ -833,11 +840,12 @@ const Troops = () => {
                               variant='outlined'
                               type='number'
                               label='Cavalry'
-                              value={troopsInfo.setup['oddCav']}
                               sx={{ maxWidth: '115px' }}
+                              value={troopsInfo.setup['oddCav']}
                               onChange={e => {
                                 handleCalculatorChange(e, 'oddCav')
                               }}
+                              onBlur={handleCalculatorBlur}
                             />
                           </Box>
                         </Box>
@@ -856,8 +864,8 @@ const Troops = () => {
                               variant='outlined'
                               select
                               label='Tier'
-                              value={troopsInfo.setup['angelTier']}
                               sx={{ maxWidth: '60px' }}
+                              value={troopsInfo.setup['angelTier']}
                               onChange={e => {
                                 handleCalculatorChange(e, 'angelTier')
                               }}
@@ -874,11 +882,12 @@ const Troops = () => {
                               variant='outlined'
                               type='number'
                               label='Angels'
-                              value={troopsInfo.setup['angel']}
                               sx={{ maxWidth: '115px' }}
+                              value={troopsInfo.setup['angel']}
                               onChange={e => {
                                 handleCalculatorChange(e, 'angel')
                               }}
+                              onBlur={handleCalculatorBlur}
                             />
                           </Box>
                         </Box>
@@ -1379,7 +1388,7 @@ const Troops = () => {
                       label={
                         <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 2 } }) }}>
                           <Icon fontSize={20} icon='mdi:view-grid-outline' />
-                          {!hideText && 'Setup'}
+                          {'Setup'}
                         </Box>
                       }
                     />
@@ -1388,7 +1397,7 @@ const Troops = () => {
                       label={
                         <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 2 } }) }}>
                           <Icon fontSize={20} icon='carbon:software-resource-cluster' />
-                          {!hideText && 'Layouts'}
+                          {'Layouts'}
                         </Box>
                       }
                     />

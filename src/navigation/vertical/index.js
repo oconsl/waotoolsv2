@@ -24,6 +24,11 @@ const navigation = () => {
       path: '/troops'
     },
     {
+      title: 'Beast',
+      icon: 'game-icons:beast-eye',
+      path: '/beast'
+    },
+    {
       sectionTitle: 'Template Menus'
     },
     {
