@@ -1,9 +1,6 @@
 // ** React Imports
 import { useState, useEffect, forwardRef } from 'react'
 
-// ** Next Import
-import Link from 'next/link'
-
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
@@ -12,15 +9,9 @@ import Tooltip from '@mui/material/Tooltip'
 import { styled } from '@mui/material/styles'
 import MenuItem from '@mui/material/MenuItem'
 import TextField from '@mui/material/TextField'
-import CardHeader from '@mui/material/CardHeader'
 import IconButton from '@mui/material/IconButton'
-import InputLabel from '@mui/material/InputLabel'
 import Typography from '@mui/material/Typography'
-import FormControl from '@mui/material/FormControl'
-import CardContent from '@mui/material/CardContent'
-import Select from '@mui/material/Select'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
-import CloseIcon from '@mui/icons-material/Close'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 import MuiTabList from '@mui/lab/TabList'
 
@@ -28,26 +19,14 @@ import MuiTabList from '@mui/lab/TabList'
 import Icon from 'src/@core/components/icon'
 
 // ** Third Party Imports
-import format from 'date-fns/format'
-import DatePicker from 'react-datepicker'
 import toast from 'react-hot-toast'
 
-// ** Store & Actions Imports
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchData, deleteInvoice } from 'src/store/apps/invoice'
-
-// ** Utils Import
-import { getInitials } from 'src/@core/utils/get-initials'
-
 // ** Custom Components Imports
-import CustomChip from 'src/@core/components/mui/chip'
 import CustomAvatar from 'src/@core/components/mui/avatar'
-import OptionsMenu from 'src/@core/components/option-menu'
 import TableHeader from 'src/views/apps/invoice/list/TableHeader'
 import { buildingList, itemTemplates, extraBarracks, azuCalcConf } from 'src/data/building'
 
 // ** Styled Components
-import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 import CustomHeader from 'src/@core/components/Header'
 import {
   Autocomplete,
@@ -58,8 +37,6 @@ import {
   DialogContent,
   Divider,
   Fade,
-  InputAdornment,
-  OutlinedInput,
   Paper,
   Switch,
   Tab,
@@ -71,19 +48,13 @@ import {
   Toolbar,
   useMediaQuery
 } from '@mui/material'
-import Iconify from '@iconify/iconify'
-import { cyan, green, indigo } from '@mui/material/colors'
+import { green, indigo } from '@mui/material/colors'
 import { nFormatter } from 'src/@core/utils/numberFormatter'
 import { TabContext, TabPanel } from '@mui/lab'
 import nRound from 'src/@core/utils/numberRound'
 import moment from 'moment'
 
 // ** Styled component for the link in the dataTable
-const LinkStyled = styled(Link)(({ theme }) => ({
-  textDecoration: 'none',
-  color: theme.palette.primary.main
-}))
-
 const BlueButton = styled(Button)(({ theme }) => ({
   backgroundColor: indigo[500],
   color: theme.palette.getContrastText(indigo[500]),
@@ -533,7 +504,6 @@ const Planner = () => {
       }
     })
 
-    // setMovementsList([...newMovements, ...movementsList])
     setEditDialogOpen(false)
     setPlanInfo({ ...planInfo, itemList: newSelectedList, selectedList: [] })
 
@@ -1467,33 +1437,6 @@ const Planner = () => {
             </TabContext>
           </Grid>
         )}
-        {/* ITEM LIST */}
-        {/* <Grid item xs={12}>
-          <Card>
-            <TableHeader
-              value={value}
-              selectedRows={selectedRows}
-              handleClick={handleClick}
-              itemList={planInfo?.itemList}
-            />
-            {planInfo?.itemList?.length > 0 && (
-              <DataGrid
-                autoHeight
-                pagination
-                getRowId={row => row.building + '-' + row.level}
-                rows={planInfo?.itemList}
-                columns={columns}
-                checkboxSelection
-                disableRowSelectionOnClick
-                pageSizeOptions={[10, 25, 50]}
-                paginationModel={paginationModel}
-                onPaginationModelChange={setPaginationModel}
-                onRowSelectionModelChange={rows => setSelectedRows(rows)}
-                slots={{ toolbar: GridToolbar }}
-              />
-            )}
-          </Card>
-        </Grid> */}
       </Grid>
 
       {/* Dialog | ADD FROM TEMPLATE */}
@@ -1888,7 +1831,7 @@ const Planner = () => {
         >
           <IconButton
             size='small'
-            onClick={handleAddItemClose}
+            onClick={() => setEditDialogOpen(false)}
             sx={{ position: 'absolute', right: '1rem', top: '1rem' }}
           >
             <Icon icon='mdi:close' />

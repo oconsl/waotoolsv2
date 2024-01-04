@@ -2,6 +2,9 @@
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 
+// ** Next Imports
+import dynamic from 'next/dynamic'
+
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
 
@@ -15,6 +18,8 @@ import ShortcutsDropdown from 'src/@core/layouts/components/shared-components/Sh
 
 // ** Hook Import
 import { useAuth } from 'src/hooks/useAuth'
+
+const Clock = dynamic(() => import('src/utils/Clock'), { ssr: false })
 
 const notifications = [
   {
@@ -130,6 +135,10 @@ const AppBarContent = props => {
         {auth.user && <Autocomplete hidden={hidden} settings={settings} />}
       </Box>
       <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box>
+          <Clock />
+          <Clock type='local' />
+        </Box>
         <LanguageDropdown settings={settings} saveSettings={saveSettings} />
         <ModeToggler settings={settings} saveSettings={saveSettings} />
         {auth.user && (

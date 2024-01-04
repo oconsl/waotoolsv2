@@ -79,16 +79,11 @@ export const menuList = [
     subModule: [{ name: '- Equipment Simulator' }, { name: '- Enhancement Simulator' }, { name: '- Equipment List' }]
   },
   {
-    text: 'info',
-    desc: 'Information',
+    text: 'database',
+    desc: 'Database List',
     src: '/images/cards/pose_f9.png',
-    icon: 'vaadin:chart-3d',
-    subModule: [
-      { name: '- Obsidian Chart' },
-      { name: '- VIP/SVIP Chart' },
-      { name: '- Gold Tattoos Chart' },
-      { name: '- More Charts...' }
-    ]
+    icon: 'carbon:data-volume',
+    subModule: [{ name: '- Enhancement Lvls (Obsidian)' }, { name: '- VIP/SVIP Levels' }, { name: '- More Levels...' }]
   },
   {
     text: 'mystic',

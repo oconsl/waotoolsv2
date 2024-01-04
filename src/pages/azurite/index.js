@@ -1,84 +1,34 @@
 // ** React Imports
-import { useState, useEffect, forwardRef } from 'react'
-
-// ** Next Import
-import Link from 'next/link'
+import { useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
-import Tooltip from '@mui/material/Tooltip'
 import { styled } from '@mui/material/styles'
 import MenuItem from '@mui/material/MenuItem'
 import TextField from '@mui/material/TextField'
-import CardHeader from '@mui/material/CardHeader'
 import IconButton from '@mui/material/IconButton'
-import InputLabel from '@mui/material/InputLabel'
 import Typography from '@mui/material/Typography'
 import FormControl from '@mui/material/FormControl'
-import CardContent from '@mui/material/CardContent'
-import Select from '@mui/material/Select'
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
-import CloseIcon from '@mui/icons-material/Close'
-import { DataGrid, GridToolbar } from '@mui/x-data-grid'
-import MuiTabList from '@mui/lab/TabList'
-
-// ** Icon Imports
-import Icon from 'src/@core/components/icon'
-
-// ** Third Party Imports
-import format from 'date-fns/format'
-import DatePicker from 'react-datepicker'
-import toast from 'react-hot-toast'
-
-// ** Store & Actions Imports
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchData, deleteInvoice } from 'src/store/apps/invoice'
-
-// ** Utils Import
-import { getInitials } from 'src/@core/utils/get-initials'
 
 // ** Custom Components Imports
-import CustomChip from 'src/@core/components/mui/chip'
-import CustomAvatar from 'src/@core/components/mui/avatar'
-import OptionsMenu from 'src/@core/components/option-menu'
-import TableHeader from 'src/views/apps/invoice/list/TableHeader'
-import { buildingList, itemTemplates, extraBarracks, azuCalcConf } from 'src/data/building'
+import { azuCalcConf } from 'src/data/building'
 
 // ** Styled Components
-import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 import CustomHeader from 'src/@core/components/Header'
 import {
-  Autocomplete,
   Button,
   CardMedia,
-  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
-  Fade,
-  InputAdornment,
-  OutlinedInput,
   Paper,
-  Switch,
-  Tab,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Toolbar,
-  useMediaQuery
+  Switch
 } from '@mui/material'
-import Iconify from '@iconify/iconify'
-import { cyan, green, indigo } from '@mui/material/colors'
-import { nFormatter } from 'src/@core/utils/numberFormatter'
-import { TabContext, TabPanel } from '@mui/lab'
 import nRound from 'src/@core/utils/numberRound'
-import moment from 'moment'
 import { InfoOutlined } from '@mui/icons-material'
 
 const CustomBox = styled(Box)(({ theme }) => ({
@@ -88,12 +38,6 @@ const CustomBox = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   flexDirection: 'row'
 }))
-
-function round(value, precision) {
-  var multiplier = Math.pow(10, precision || 0)
-
-  return Math.round(value * multiplier) / multiplier
-}
 
 function renderMessage(type) {
   switch (type) {
