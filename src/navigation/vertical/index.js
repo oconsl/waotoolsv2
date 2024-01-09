@@ -37,6 +37,16 @@ const navigation = () => {
       title: 'Troops',
       icon: 'game-icons:rally-the-troops',
       path: '/troops'
+    },
+    {
+      title: 'Mystic',
+      icon: 'basil:university-outline',
+      path: '/mystic'
+    },
+    {
+      title: 'High College',
+      icon: 'la:school',
+      path: '/college'
     }
   ]
 }

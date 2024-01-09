@@ -62,7 +62,7 @@ export const menuList = [
     desc: 'Building',
     src: '/images/cards/pose_f9.png',
     icon: 'emojione-monotone:construction',
-    subModule: [{ name: 'Building List' }, { name: '- Building Path Recommendation' }]
+    subModule: [{ name: '- Building List' }, { name: '- Building Path Recommendation' }]
   },
   {
     text: 'colossus',
