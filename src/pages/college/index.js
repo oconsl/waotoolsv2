@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useEffect, forwardRef } from 'react'
+import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 // ** MUI Imports
@@ -8,21 +8,13 @@ import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
 import Tooltip from '@mui/material/Tooltip'
 import { styled, createTheme } from '@mui/material/styles'
-import MenuItem from '@mui/material/MenuItem'
 import TextField from '@mui/material/TextField'
-import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import MuiTabList from '@mui/lab/TabList'
 import LinearProgress from '@mui/material/LinearProgress'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
-
-// ** Third Party Imports
-import toast from 'react-hot-toast'
-
-// ** Custom Components Imports
-import { troopsTemplates } from 'src/data/troops'
 
 // ** Styled Components
 import CustomHeader from 'src/@core/components/Header'
@@ -34,43 +26,18 @@ import {
   Badge,
   Button,
   ButtonGroup,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
   Divider,
-  Fade,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  ListSubheader,
   Paper,
   Snackbar,
-  Tab,
   Toolbar,
   useMediaQuery
 } from '@mui/material'
 import { green, red } from '@mui/material/colors'
-import { TabContext, TabPanel } from '@mui/lab'
-import {
-  AccountTree,
-  AddSharp,
-  AddToPhotos,
-  ClearAll,
-  Error,
-  Info,
-  InfoOutlined,
-  LibraryAdd,
-  Looks3,
-  Looks4,
-  LooksOne,
-  LooksTwo,
-  NewReleases,
-  RemoveSharp,
-  TaskAlt,
-  Warning
-} from '@mui/icons-material'
+import { AccountTree, AddSharp, AddToPhotos, ClearAll, RemoveSharp } from '@mui/icons-material'
 
 import { highCollegeOptions } from 'src/data/college'
 
@@ -501,7 +468,7 @@ const HighCollege = () => {
             <Grid container spacing={2} sx={{ padding: '0.5em' }}>
               <Grid item xs={12} sx={{ display: 'flex' }}>
                 <Paper elevation={24} sx={{ maxWidth: '550px' }}>
-                  <Divider light>USER CONFIGURATION</Divider>
+                  <Divider light>{<Typography variant='caption'>USER CONFIGURATION</Typography>}</Divider>
 
                   <Box
                     sx={{
@@ -603,7 +570,7 @@ const HighCollege = () => {
                       </Box>
                     </Box>
                   </Box>
-                  <Divider light>TREE</Divider>
+                  <Divider light>{<Typography variant='caption'>TREE</Typography>}</Divider>
                   <Box sx={{ minWidth: `${hideText ? '1px' : '520px'}` }}>
                     {collegeInfo.options.map(opt => {
                       if (
@@ -1314,7 +1281,9 @@ const HighCollege = () => {
                       }
                     })}
                   </Box>
-                  {totalPoints > 0 && <Divider light>SELECTED TALENTS SKILLS</Divider>}
+                  {totalPoints > 0 && (
+                    <Divider light>{<Typography variant='caption'>SELECTED TALENTS</Typography>}</Divider>
+                  )}
                   <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', maxWidth: '450px' }}>
                     {[...collegeInfo.options].map(opt => {
                       if (opt.counter > 0) {
@@ -1423,10 +1392,10 @@ const HighCollege = () => {
                 <Typography variant='caption' style={{ marginTop: '3px' }}>
                   Used / Total
                 </Typography>
-                <Typography variant='button' style={{ minWidth: '' }}>
+                <Typography variant='body2' color='textPrimary'>
                   {totalPoints.toLocaleString()} / {totalAvailablePoints.toLocaleString()}
                 </Typography>
-                <Typography variant='body1' color={''}>
+                <Typography variant='body2' color='textPrimary'>
                   ${Math.round((totalPoints / 80) * 5).toLocaleString()}
                 </Typography>
               </div>

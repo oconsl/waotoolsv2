@@ -300,7 +300,7 @@ const Colossus = props => {
 
                 <Box>
                   <Divider light sx={{ marginBottom: '5px', marginTop: '5px' }}>
-                    USER CONFIGURATIONS
+                    {<Typography variant='caption'>USER CONFIGURATION</Typography>}
                   </Divider>
                 </Box>
                 <Toolbar

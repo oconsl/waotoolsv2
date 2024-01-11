@@ -358,7 +358,7 @@ const Mystic = props => {
           <Grid container spacing={3} style={{ minWidth: '320px', padding: '1rem' }}>
             <Grid item xs={12} md={6} lg={8}>
               <Paper elevation={12} sx={{ padding: '1rem' }}>
-                <Divider light>USER CONFIGURATION</Divider>
+                <Divider light>{<Typography variant='caption'>USER CONFIGURATION</Typography>}</Divider>
                 <Box
                   key={'set-talents-limit'}
                   sx={{
@@ -432,7 +432,7 @@ const Mystic = props => {
                     </Button>
                   </Tooltip>
                 </Toolbar>
-                <Divider>TROOPS</Divider>
+                <Divider>{<Typography variant='caption'>TROOPS</Typography>}</Divider>
                 {activeTab === undefined ? null : (
                   <Grid item xs={12}>
                     <TabContext value={activeTab}>
@@ -546,7 +546,7 @@ const Mystic = props => {
                                       }}
                                     >
                                       <>
-                                        <Divider>SKILLS</Divider>
+                                        <Divider>{<Typography variant='caption'>SKILLS</Typography>}</Divider>
                                         <Paper elevation={24}>
                                           {mysticConfig.troopObj?.troop?.length > 0 && (
                                             <>

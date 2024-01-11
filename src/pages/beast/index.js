@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useEffect, forwardRef } from 'react'
+import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 // ** MUI Imports
@@ -10,19 +10,12 @@ import Tooltip from '@mui/material/Tooltip'
 import { styled, createTheme } from '@mui/material/styles'
 import MenuItem from '@mui/material/MenuItem'
 import TextField from '@mui/material/TextField'
-import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import MuiTabList from '@mui/lab/TabList'
 import LinearProgress from '@mui/material/LinearProgress'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
-
-// ** Third Party Imports
-import toast from 'react-hot-toast'
-
-// ** Custom Components Imports
-import { troopsTemplates } from 'src/data/troops'
 
 // ** Styled Components
 import CustomHeader from 'src/@core/components/Header'
@@ -35,11 +28,7 @@ import {
   Button,
   ButtonGroup,
   CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
   Divider,
-  Fade,
   List,
   ListItem,
   ListItemAvatar,
@@ -58,18 +47,13 @@ import {
   AddSharp,
   AddToPhotos,
   ClearAll,
-  Error,
-  Info,
-  InfoOutlined,
   LibraryAdd,
   Looks3,
   Looks4,
   LooksOne,
   LooksTwo,
   NewReleases,
-  RemoveSharp,
-  TaskAlt,
-  Warning
+  RemoveSharp
 } from '@mui/icons-material'
 
 import { beastList, beastSkills, beastSkillsTemplates, dataOptions } from 'src/data/beast'
@@ -525,7 +509,7 @@ const Beast = () => {
     const newTemplate = beastSkillsTemplates.find(t => t.k === skillTemplate)
 
     if (!newTemplate) {
-      return snackOpen({ open: 'Template not exists.', type: 'error', time: 3 })
+      return snackOpen({ open: 'Template not exists.', type: 'error', time: 3000 })
     }
 
     const newSlotLevel = [...slotLevel]
@@ -618,7 +602,7 @@ const Beast = () => {
                   >
                     BEAST TALENTS SIMULATOR
                   </Typography>
-                  <Divider light>USER CONFIGURATION</Divider>
+                  <Divider light>{<Typography variant='caption'>USER CONFIGURATION</Typography>}</Divider>
 
                   <Box
                     sx={{
@@ -724,7 +708,7 @@ const Beast = () => {
                       </Box>
                     </Box>
                   </Box>
-                  <Divider light>TREE</Divider>
+                  <Divider light>{<Typography variant='caption'>TREE</Typography>}</Divider>
                   <Box sx={{ minWidth: `${hideText ? '1px' : '520px'}` }}>
                     {beastInfo.options.map(opt => {
                       if (
@@ -737,7 +721,7 @@ const Beast = () => {
                               <>
                                 <div style={{ marginTop: '5px' }} />
 
-                                <Divider>NEW BRANCH</Divider>
+                                <Divider>{<Typography variant='caption'>NEW BRANCH</Typography>}</Divider>
                                 <Divider light sx={{ marginTop: '5px' }} />
                               </>
                             )}
@@ -1547,10 +1531,10 @@ const Beast = () => {
                 <Typography variant='caption' style={{ marginTop: '3px' }}>
                   Used / Total
                 </Typography>
-                <Typography variant='button' style={{ minWidth: '' }}>
+                <Typography variant='body2' color='textPrimary'>
                   {totalPoints.toLocaleString()} / {totalAvailablePoints.toLocaleString()}
                 </Typography>
-                <Typography variant='body1' color={''}>
+                <Typography variant='body2' color='textPrimary'>
                   ${Math.round((totalPoints / 80) * 5).toLocaleString()}
                 </Typography>
               </div>
@@ -1587,7 +1571,7 @@ const Beast = () => {
                   >
                     BEAST PASSIVE SKILLS SIMULATOR
                   </Typography>
-                  <Divider>SETUP</Divider>
+                  <Divider>{<Typography variant='caption'>SETUP</Typography>}</Divider>
                   <Box
                     sx={{
                       padding: '0.8em',
@@ -1623,7 +1607,7 @@ const Beast = () => {
                       </TextField>
                     </Box>
                   </Box>
-                  <Divider>SKILL SLOTS</Divider>
+                  <Divider>{<Typography variant='caption'>SKILLS SLOTS</Typography>}</Divider>
                   <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
                     {slotLevel?.map((slot, index) => {
                       return (
@@ -1750,7 +1734,9 @@ const Beast = () => {
                   {(slotLevel[0].skill?.key?.length > 0 ||
                     slotLevel[1].skill?.key?.length > 0 ||
                     slotLevel[2].skill?.key?.length > 0 ||
-                    slotLevel[3].skill?.key?.length > 0) && <Divider>SELECTED SKILLS</Divider>}
+                    slotLevel[3].skill?.key?.length > 0) && (
+                    <Divider>{<Typography variant='caption'>SELECTED SKILLS</Typography>}</Divider>
+                  )}
                   <Box>
                     {slotLevel?.map(opt => {
                       let statDescription = { text: opt?.skill?.info }

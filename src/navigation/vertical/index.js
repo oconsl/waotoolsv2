@@ -29,14 +29,19 @@ const navigation = () => {
       path: '/beast'
     },
     {
+      title: 'Buildings',
+      icon: 'emojione-monotone:construction',
+      path: '/building'
+    },
+    {
       title: 'Colossus',
       icon: 'game-icons:giant',
       path: '/colossus'
     },
     {
-      title: 'Troops',
-      icon: 'game-icons:rally-the-troops',
-      path: '/troops'
+      title: 'High College',
+      icon: 'la:school',
+      path: '/college'
     },
     {
       title: 'Mystic',
@@ -44,9 +49,14 @@ const navigation = () => {
       path: '/mystic'
     },
     {
-      title: 'High College',
-      icon: 'la:school',
-      path: '/college'
+      title: 'Speeds',
+      icon: 'material-symbols:speed-outline',
+      path: '/speeds'
+    },
+    {
+      title: 'Troops',
+      icon: 'game-icons:rally-the-troops',
+      path: '/troops'
     }
   ]
 }

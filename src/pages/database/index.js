@@ -26,7 +26,7 @@ import {
   TableRow,
   createTheme
 } from '@mui/material'
-import { ExpandMore, Search } from '@mui/icons-material'
+import { ClearAll, ExpandMore, Search } from '@mui/icons-material'
 
 const theme = createTheme()
 
@@ -34,7 +34,7 @@ const DatabaseList = props => {
   const [chartData, setChartData] = useState([
     ...infoData.sort((a, b) => (a.desc > b.desc ? 1 : b.desc > a.desc ? -1 : 0))
   ])
-  const [search, setSearch] = useState({ found: true, search: null })
+  const [search, setSearch] = useState({ found: true, search: '' })
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {}, 1500)
@@ -76,7 +76,7 @@ const DatabaseList = props => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Card>
-            <CustomHeader icon='database' title='DATABASE LISTS' />
+            <CustomHeader icon='database' title='DATABASE' />
             <Divider />
           </Card>
         </Grid>
@@ -85,7 +85,7 @@ const DatabaseList = props => {
         <Card>
           <Grid container spacing={3} style={{ minWidth: '320px', padding: '1rem' }}>
             <Grid item xs={12} md={6} lg={8}>
-              <Paper elevation={12} sx={{ padding: '1rem' }}>
+              <Paper elevation={6} sx={{ padding: '1rem' }}>
                 <Paper
                   elevation={12}
                   component='form'
@@ -94,7 +94,8 @@ const DatabaseList = props => {
                     display: 'flex',
                     alignItems: 'center',
                     width: '250px',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
+                    border: '1px solid rgb(49 113 235 / 39%)'
                   }}
                 >
                   <InputBase
@@ -106,9 +107,19 @@ const DatabaseList = props => {
                     placeholder='Data Filter'
                     inputProps={{ 'aria-label': 'filter information' }}
                     onChange={handleFilterSearch}
+                    value={search.search}
                   />
                   <Divider orientation='vertical' />
-                  <IconButton type='submit' aria-label='search'>
+                  <IconButton
+                    aria-label='clear'
+                    onClick={e => {
+                      setChartData([...infoData])
+                      setSearch({ found: true, search: '' })
+                    }}
+                  >
+                    <ClearAll />
+                  </IconButton>
+                  <IconButton disabled aria-label='search'>
                     <Search />
                   </IconButton>
                 </Paper>
