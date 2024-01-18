@@ -34,7 +34,8 @@ const CardMenu = props => {
           paddingLeft: '20px',
           backgroundColor: 'customColors.skyPalettePrimary',
           height: '60px',
-          '&:hover *': { color: 'white' } ,
+          fontWeight: '600',
+          '&:hover *': { color: '#F9FDFD' } ,
         }}
       >
         <Typography
@@ -44,7 +45,7 @@ const CardMenu = props => {
           className='cardHeaderTitle' 
           color="customColors.skyPaletteTitle" 
           sx={{ 
-            fontWeight: 500, 
+            fontWeight: 600, 
             textDecoration: 'none', 
             textAlign: 'center',
             width: 'auto',

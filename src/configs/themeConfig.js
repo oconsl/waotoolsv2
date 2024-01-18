@@ -8,7 +8,7 @@ const themeConfig = {
   // ** Layout Configs
   templateName: 'WaoTools v2' /* App Name */,
   layout: 'vertical' /* vertical | horizontal */,
-  mode: 'dark' /* light | dark | semi-dark /*! Note: semi-dark value will only work for Vertical Layout */,
+  mode: 'light' /* light | dark | semi-dark /*! Note: semi-dark value will only work for Vertical Layout */,
   direction: 'ltr' /* ltr | rtl */,
   skin: 'default' /* default | bordered */,
   contentWidth: 'boxed' /* full | boxed */,
@@ -32,8 +32,8 @@ const themeConfig = {
   appBarBlur: true /* true | false */,
   // ** Other Configs
   responsiveFontSizes: true /* true | false */,
-  disableRipple: false /* true | false */,
-  disableCustomizer: false /* true | false */,
+  disableRipple: true /* true | false */,
+  disableCustomizer: true /* true | false */,
   toastPosition: 'top-right' /* top-left | top-center | top-right | bottom-left | bottom-center | bottom-right */
 }
 

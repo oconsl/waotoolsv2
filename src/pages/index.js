@@ -11,7 +11,7 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 const Home = () => {
   return (
     <ApexChartWrapper>
-      <Grid container spacing={6}>
+      <Grid container spacing={6} columns={8}>
         {menuList.map(menu => {
           return (
             <Grid key={menu.desc} item xs={12} sm={6} md={2} 

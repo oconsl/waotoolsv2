@@ -7,7 +7,7 @@ const DefaultPalette = (mode, skin, themeColor) => {
 
   const primaryGradient = () => {
     if (themeColor === 'primary') {
-      return '#C6A7FE'
+      return '#51ADCF'
     } else if (themeColor === 'secondary') {
       return '#9C9FA4'
     } else if (themeColor === 'success') {
@@ -45,9 +45,9 @@ const DefaultPalette = (mode, skin, themeColor) => {
       tableHeaderBg: mode === 'light' ? '#F9FAFC' : '#3D3759',
       skyPalettePrimary: '#0278AE',
       skyPaletteSecondary: '#51ADCF',
-      skyPaletteTertiary: '#A5ECD7',
-      skyPaletteQuaternary: '#E8FFC1',
-      skyPaletteTitle: '#04364A'
+      skyPaletteTertiary: '#4DDDB2',
+      skyPaletteQuaternary: '#EEF7A3',
+      skyPaletteTitle: '#042E41'
     },
     mode: mode,
     common: {
@@ -56,7 +56,7 @@ const DefaultPalette = (mode, skin, themeColor) => {
     },
     primary: {
       light: '#9E69FD',
-      main: '#1976d2',
+      main: '#0278AE',
       dark: '#804BDF',
       contrastText: whiteColor
     },

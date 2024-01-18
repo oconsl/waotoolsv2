@@ -8,7 +8,6 @@ import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
 import Tooltip from '@mui/material/Tooltip'
 import { styled, createTheme } from '@mui/material/styles'
-import MenuItem from '@mui/material/MenuItem'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import MuiTabList from '@mui/lab/TabList'
@@ -27,36 +26,20 @@ import {
   Badge,
   Button,
   ButtonGroup,
-  CircularProgress,
   Divider,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  ListSubheader,
   Paper,
   Snackbar,
-  Tab,
   Toolbar,
   useMediaQuery
 } from '@mui/material'
 import { green, red } from '@mui/material/colors'
-import { TabContext, TabPanel } from '@mui/lab'
-import {
-  AccountTree,
-  AddSharp,
-  AddToPhotos,
-  ClearAll,
-  LibraryAdd,
-  Looks3,
-  Looks4,
-  LooksOne,
-  LooksTwo,
-  NewReleases,
-  RemoveSharp
-} from '@mui/icons-material'
+import { AccountTree, AddSharp, AddToPhotos, ClearAll, RemoveSharp } from '@mui/icons-material'
 
-import { beastList, beastSkills, beastSkillsTemplates, dataOptions } from 'src/data/beast'
+import { highCollegeOptions } from 'src/data/college'
 
 // ** Styled component for the link in the dataTable
 const theme = createTheme()
@@ -98,9 +81,8 @@ const TabList = styled(MuiTabList)(({ theme }) => ({
 }))
 
 // ** Var custom
-const defaultBeastInfo = {
-  options: [...dataOptions],
-  beast: 'pegasus',
+const defaultCollegeInfo = {
+  options: [...highCollegeOptions],
   userTalents: 0
 }
 
@@ -126,22 +108,19 @@ LinearProgressWithLabel.propTypes = {
 }
 
 /* eslint-enable */
-const Beast = () => {
+const HighCollege = () => {
   // ** State
-  const [activeTab, setActiveTab] = useState('talents')
+  const activeTab = 'talents'
   const [isLoading, setIsLoading] = useState(true)
   const hideText = useMediaQuery(theme => theme.breakpoints.down('sm'))
-  const [beastInfo, setBeastInfo] = useState(defaultBeastInfo)
-  const beastSkillList = beastSkills.beastSkillList
-  const [slotLevel, setSlotLevel] = useState(beastSkills.slots)
-  const [skillTemplate, setSkillTemplate] = useState('')
+  const [collegeInfo, setCollegeInfo] = useState(defaultCollegeInfo)
   const [progress, setProgress] = useState(0)
 
   const [snackOpen, setSnackOpen] = useState({ open: false })
 
   const [totalAvailablePoints, setTotalAvailablePoints] = useState(
-    [...dataOptions]
-      .filter(o => o.beast === 'all' || o.beast === 'any' || o.beast === beastInfo.beast)
+    [...highCollegeOptions]
+      .filter(o => o.beast === 'all' || o.beast === 'any')
       .map(o => o.levels)
       .map(od => {
         return od.reduce((accumulator, currentValue) => accumulator + currentValue.points, 0)
@@ -149,7 +128,7 @@ const Beast = () => {
       .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
   )
 
-  const totalPoints = beastInfo.options.reduce(
+  const totalPoints = collegeInfo.options.reduce(
     (accumulator, currentValue) => accumulator + currentValue.curTotalPoints,
     0
   )
@@ -159,15 +138,13 @@ const Beast = () => {
     let saved
     if (typeof window !== 'undefined') {
       // Perform localStorage action
-      saved = JSON.parse(localStorage.getItem('beastInfo'))
+      saved = JSON.parse(localStorage.getItem('collegeInfo'))
     }
     if (saved) {
-      setBeastInfo(saved)
+      setCollegeInfo(saved)
     } else {
-      const newOptions = [...dataOptions].filter(
-        o => o.beast === 'all' || o.beast === 'any' || o.beast === defaultBeastInfo.beast
-      )
-      setBeastInfo({ ...defaultBeastInfo, options: newOptions })
+      const newOptions = [...highCollegeOptions].filter(o => o.beast === 'all' || o.beast === 'any')
+      setCollegeInfo({ ...defaultCollegeInfo, options: newOptions })
     }
     setIsLoading(false)
   }, [])
@@ -175,21 +152,17 @@ const Beast = () => {
   useEffect(() => {
     let totalCompleted = 0
 
-    if (beastInfo.userTalents > 0) {
-      totalCompleted = 100 - ((beastInfo.userTalents - totalPoints) / beastInfo.userTalents) * 100
+    if (collegeInfo.userTalents > 0) {
+      totalCompleted = 100 - ((collegeInfo.userTalents - totalPoints) / collegeInfo.userTalents) * 100
     } else {
       totalCompleted = 100 - ((totalAvailablePoints - totalPoints) / totalAvailablePoints) * 100
     }
 
     setProgress(totalCompleted)
-  }, [totalPoints, totalAvailablePoints, beastInfo.userTalents])
-
-  const handleChange = (event, value) => {
-    setActiveTab(value)
-  }
+  }, [totalPoints, totalAvailablePoints, collegeInfo.userTalents])
 
   const handleSaveData = e => {
-    localStorage.setItem('beastInfo', JSON.stringify(beastInfo))
+    localStorage.setItem('collegeInfo', JSON.stringify(collegeInfo))
 
     return setSnackOpen({ open: `Information Stored in the browser!`, type: 'success', time: 3000 })
   }
@@ -201,25 +174,18 @@ const Beast = () => {
     setSnackOpen({ open: false })
   }
 
-  // Beast Talents
-  const handleBeastChange = e => {
-    const newBeast = e.target.value
-    const newOptions = [...dataOptions].filter(o => o.beast === 'all' || o.beast === 'any' || o.beast === newBeast)
-    setBeastInfo({ ...beastInfo, options: newOptions, beast: newBeast })
-  }
-
   const handlePrerequisiteFill = (row, col) => {
-    let newOptionArray = [...beastInfo.options]
+    let newOptionArray = [...collegeInfo.options]
     let expArrayFiltered
     let dependencyArray = []
 
-    const optionObj = beastInfo.options?.find(o => o.row === row && o.col === col)
+    const optionObj = collegeInfo.options?.find(o => o.row === row && o.col === col)
     const reqArray = optionObj.dependency
     const reqArrayB = optionObj?.dependencyB
 
     if (reqArray?.length > 0) {
       reqArray.forEach(d => {
-        const checkDependency = beastInfo.options?.find(opt => opt.row === d.row && opt.col === d.col)
+        const checkDependency = collegeInfo.options?.find(opt => opt.row === d.row && opt.col === d.col)
         if (d?.minLevel > checkDependency?.curLevel) {
           // Verify dependency
           dependencyArray.push({
@@ -248,7 +214,7 @@ const Beast = () => {
 
     if (reqArrayB?.length > 0 && optionObj?.curLevel >= optionObj?.dependencyBlevel) {
       reqArrayB.forEach(d => {
-        const checkDependency = beastInfo.options?.find(opt => opt.row === d.row && opt.col === d.col)
+        const checkDependency = collegeInfo.options?.find(opt => opt.row === d.row && opt.col === d.col)
         if (d?.minLevel > checkDependency?.curLevel) {
           // Verify dependency
           dependencyArray.push({
@@ -276,23 +242,23 @@ const Beast = () => {
     }
 
     const checkPointsLimit = [...newOptionArray]
-      .filter(o => o.beast === 'all' || o.beast === 'any' || o.beast === beastInfo.beast)
+      .filter(o => o.beast === 'all' || o.beast === 'any')
       .reduce((accumulator, currentValue) => accumulator + currentValue.curTotalPoints, 0)
 
-    if (checkPointsLimit > beastInfo.userTalents && beastInfo.userTalents > 0)
+    if (checkPointsLimit > collegeInfo.userTalents && collegeInfo.userTalents > 0)
       return setSnackOpen({
-        open: `You dont have enough BEAST TALENTS points available. You need ${checkPointsLimit?.toLocaleString()} and you have a limit of ${beastInfo.userTalents?.toLocaleString()} `,
+        open: `You dont have enough AZURITE available. You need ${checkPointsLimit?.toLocaleString()} and you have a limit of ${collegeInfo.userTalents?.toLocaleString()} `,
         type: 'warning',
         time: 3000
       })
 
-    setBeastInfo(prevState => ({ ...prevState, options: newOptionArray }))
+    setCollegeInfo(prevState => ({ ...prevState, options: newOptionArray }))
 
     setSnackOpen({ open: `Prerequisites loaded.`, type: 'success', time: 3000 })
   }
 
   const handleIncrease = (row, col, incAll = false) => {
-    const oldObject = beastInfo.options.find(r => r.row === row && r.col === col)
+    const oldObject = collegeInfo.options.find(r => r.row === row && r.col === col)
     if (oldObject?.counter === oldObject?.maxCounter) return
 
     let newTotalPoints = 0
@@ -306,7 +272,7 @@ const Beast = () => {
 
     if (oldObject?.dependency?.length > 0) {
       oldObject.dependency.forEach(d => {
-        const checkDependency = beastInfo.options.find(o => o.row === d.row && o.col === d.col)
+        const checkDependency = collegeInfo.options.find(o => o.row === d.row && o.col === d.col)
         if (d?.minLevel > checkDependency?.counter) {
           dependencyObj.push({
             row: checkDependency?.row,
@@ -332,7 +298,7 @@ const Beast = () => {
 
     if (oldObject?.dependencyB?.length > 0 && newCounter > oldObject?.dependencyBlevel) {
       oldObject.dependencyB.forEach(d => {
-        const checkDependency = beastInfo.options.find(o => o.row === d.row && o.col === d.col)
+        const checkDependency = collegeInfo.options.find(o => o.row === d.row && o.col === d.col)
         if (d?.minLevel > checkDependency?.counter) {
           dependencyObj.push({
             row: checkDependency?.row,
@@ -374,7 +340,7 @@ const Beast = () => {
         newTotalPoints = oldObject?.levels
           ?.filter(l => l.level > oldObject.counter && l.level < oldObject?.dependencyBlevel)
           .reduce((accumulator, currentValue) => accumulator + currentValue.points, 0)
-        newState = beastInfo.options?.map(obj =>
+        newState = collegeInfo.options?.map(obj =>
           obj.row === row && obj.col === col
             ? {
                 ...obj,
@@ -388,7 +354,7 @@ const Beast = () => {
         newTotalPoints = oldObject?.levels
           ?.filter(l => l.level > oldObject.counter)
           .reduce((accumulator, currentValue) => accumulator + currentValue.points, 0)
-        newState = beastInfo.options?.map(obj =>
+        newState = collegeInfo.options?.map(obj =>
           obj.row === row && obj.col === col
             ? {
                 ...obj,
@@ -401,7 +367,7 @@ const Beast = () => {
       }
     } else {
       newTotalPoints = oldObject?.levels?.find(l => l.level === newCounter)?.points
-      newState = beastInfo.options?.map(obj =>
+      newState = collegeInfo.options?.map(obj =>
         obj.row === row && obj.col === col
           ? { ...obj, counter: newCounter, curLevel: newCounter, curTotalPoints: oldTotalPoints + newTotalPoints }
           : obj
@@ -409,39 +375,37 @@ const Beast = () => {
     }
 
     const checkPointsLimit = [...newState]
-      .filter(o => o.beast === 'all' || o.beast === 'any' || o.beast === beastInfo.beast)
+      .filter(o => o.beast === 'all' || o.beast === 'any')
       .reduce((accumulator, currentValue) => accumulator + currentValue.curTotalPoints, 0)
 
-    if (checkPointsLimit > beastInfo.userTalents && beastInfo.userTalents > 0)
+    if (checkPointsLimit > collegeInfo.userTalents && collegeInfo.userTalents > 0)
       return setSnackOpen({
-        open: `You dont have enough BEAST TALENTS points available. You need ${checkPointsLimit?.toLocaleString()} and you have a limit of ${beastInfo.userTalents?.toLocaleString()} `,
+        open: `You dont have enough AZURITE available. You need ${checkPointsLimit?.toLocaleString()} and you have a limit of ${collegeInfo.userTalents?.toLocaleString()} `,
         type: 'warning',
         time: 3000
       })
 
-    setBeastInfo(prevState => ({ ...prevState, options: newState }))
+    setCollegeInfo(prevState => ({ ...prevState, options: newState }))
   }
 
   const handleDrecrease = (row, col) => {
-    const oldObject = beastInfo.options.find(r => r.row === row && r.col === col)
+    const oldObject = collegeInfo.options.find(r => r.row === row && r.col === col)
     if (oldObject?.counter === oldObject?.minCounter) return
     const newCounter = oldObject.counter
 
     const oldTotalPoints = oldObject?.curTotalPoints
     const newTotalPoints = oldObject?.levels?.find(l => l.level === newCounter)?.points
 
-    const newState = beastInfo.options?.map(obj =>
+    const newState = collegeInfo.options?.map(obj =>
       obj.row === row && obj.col === col
         ? { ...obj, counter: newCounter - 1, curLevel: newCounter - 1, curTotalPoints: oldTotalPoints - newTotalPoints }
         : obj
     )
-    setBeastInfo(prevState => ({ ...prevState, options: newState }))
+    setCollegeInfo(prevState => ({ ...prevState, options: newState }))
   }
 
   const handleFillAll = e => {
-    const defaultBeast = beastInfo.beast ?? defaultBeastInfo.beast
-
-    const newState = [...beastInfo.options]?.map(obj => {
+    const newState = [...collegeInfo.options]?.map(obj => {
       return {
         ...obj,
         counter: obj.maxCounter,
@@ -451,7 +415,7 @@ const Beast = () => {
     })
 
     const totalPoints = newState
-      .filter(o => o.beast === 'all' || o.beast === 'any' || o.beast === defaultBeast)
+      .filter(o => o.beast === 'all' || o.beast === 'any')
       .map(o => o.levels)
       .map(od => {
         return od.reduce((accumulator, currentValue) => accumulator + currentValue.points, 0)
@@ -460,119 +424,29 @@ const Beast = () => {
 
     const checkPointsLimit = totalPoints
 
-    if (checkPointsLimit > beastInfo.userTalents && beastInfo.userTalents > 0)
+    if (checkPointsLimit > collegeInfo.userTalents && collegeInfo.userTalents > 0)
       return setSnackOpen({
-        open: `You dont have enough BEAST TALENTS points available. You need ${checkPointsLimit?.toLocaleString()} and you have a limit of ${beastInfo.userTalents?.toLocaleString()} `,
+        open: `You dont have enough AZURITE available. You need ${checkPointsLimit?.toLocaleString()} and you have a limit of ${collegeInfo.userTalents?.toLocaleString()} `,
         type: 'warning',
         time: 3000
       })
 
     setTotalAvailablePoints(totalPoints)
-    setBeastInfo(prevState => ({ ...prevState, options: newState }))
+    setCollegeInfo(prevState => ({ ...prevState, options: newState }))
   }
 
   const handleClearAll = e => {
-    setBeastInfo(prevState => ({
+    setCollegeInfo(prevState => ({
       ...prevState,
-      options: [...dataOptions].filter(o => o.beast === 'all' || o.beast === 'any' || o.beast === prevState.beast)
+      options: [...highCollegeOptions].filter(o => o.beast === 'all' || o.beast === 'any')
     }))
   }
 
   const handleRemoveItems = e => {
-    setBeastInfo({ ...defaultBeastInfo })
-    localStorage.removeItem('beastInfo')
+    setCollegeInfo({ ...defaultCollegeInfo })
+    localStorage.removeItem('collegeInfo')
 
     return setSnackOpen({ open: `Information Cleared from the browser.`, type: 'error' })
-  }
-
-  // Beast Skills
-  const handleBeastSkillChange = (e, slot) => {
-    const newBeastSkill = e.target.value
-    const oldObject = slotLevel?.find(r => r.key === slot)
-    const alreadyPicked = slotLevel?.find(s => s.skill.key === newBeastSkill)
-
-    if (alreadyPicked) {
-      const message = `This skill was already picked at SLOT #${alreadyPicked.key}.`
-
-      return setSnackOpen({ open: message, type: 'warning', time: 6000 })
-    }
-
-    if (oldObject) {
-      const newSkill = beastSkillList.find(bs => bs.key === newBeastSkill)
-      const newState = slotLevel?.map(obj => (obj.key === slot ? { ...obj, skill: newSkill } : obj))
-      setSlotLevel(newState)
-    }
-  }
-
-  const handleBeastSkillChangeTemplate = e => {
-    const skillTemplate = +e.target.value
-    const newTemplate = beastSkillsTemplates.find(t => t.k === skillTemplate)
-
-    if (!newTemplate) {
-      return snackOpen({ open: 'Template not exists.', type: 'error', time: 3000 })
-    }
-
-    const newSlotLevel = [...slotLevel]
-
-    slotLevel.forEach((slot, i) => {
-      const skillKey = newTemplate?.skills[i]
-      const newSkill = beastSkillList.find(bs => bs.key === skillKey)
-      const maxLevel = newSlotLevel[i].maxLevel
-
-      const newExpNeeded = beastSkills.skillLevel
-        .filter(r => r.level <= maxLevel)
-        .reduce((accumulator, currentValue) => accumulator + currentValue.exp, 0)
-
-      newSlotLevel[i].skill = newSkill
-      newSlotLevel[i].level = maxLevel
-      newSlotLevel[i].expNeeded = newExpNeeded
-    })
-
-    setSlotLevel(newSlotLevel)
-    setSkillTemplate(skillTemplate)
-  }
-
-  const handleDrecreaseBeastSkillChange = slot => {
-    const oldObject = slotLevel?.find(r => r.key === slot)
-    if (oldObject?.level === oldObject?.minLevel) return
-    const newCounter = oldObject.level === oldObject.minLevel ? oldObject.minLevel : oldObject.level - 1
-    const levelExp = beastSkills.skillLevel.find(s => s.level === oldObject?.level)?.exp
-    const newExpNeeded = oldObject.expNeeded - levelExp
-
-    const newState = slotLevel?.map(obj =>
-      obj.key === slot ? { ...obj, level: newCounter, expNeeded: newExpNeeded } : obj
-    )
-    setSlotLevel(newState)
-  }
-
-  const handleIncreaseBeastSkillChange = slot => {
-    const oldObject = slotLevel?.find(r => r.key === slot)
-    if (oldObject?.level === oldObject?.maxLevel) return
-    const newCounter = oldObject.level === oldObject.maxLevel ? oldObject.maxLevel : oldObject.level + 1
-    const levelExp = beastSkills.skillLevel.find(s => s.level === newCounter)?.exp
-    const newExpNeeded = oldObject.expNeeded + levelExp
-
-    const newState = slotLevel?.map(obj =>
-      obj.key === slot ? { ...obj, level: newCounter, expNeeded: newExpNeeded } : obj
-    )
-    setSlotLevel(newState)
-  }
-
-  const handleIncreaseBeastSkillAll = (slot, level) => {
-    if (!slot || !level) return
-
-    const newCounter = +level
-
-    const newExpNeeded = beastSkills.skillLevel
-      .filter(r => r.level <= level)
-      .reduce((accumulator, currentValue) => accumulator + currentValue.exp, 0)
-
-    const newState = slotLevel?.map(obj =>
-      obj.key === slot ? { ...obj, level: newCounter, expNeeded: newExpNeeded } : obj
-    )
-    setSlotLevel(newState)
-
-    return setSnackOpen({ open: 'Max level set.', type: 'success', time: 3000 })
   }
 
   const tabContentList = {
@@ -593,15 +467,7 @@ const Beast = () => {
             </Snackbar>
             <Grid container spacing={2} sx={{ padding: '0.5em' }}>
               <Grid item xs={12} sx={{ display: 'flex' }}>
-                <Paper elevation={24}>
-                  <Typography
-                    align='center'
-                    variant='h6'
-                    color='primary'
-                    sx={{ paddingTop: '0.5em', paddingBottom: '0.5em' }}
-                  >
-                    BEAST TALENTS SIMULATOR
-                  </Typography>
+                <Paper elevation={24} sx={{ maxWidth: '550px' }}>
                   <Divider light>{<Typography variant='caption'>USER CONFIGURATION</Typography>}</Divider>
 
                   <Box
@@ -651,27 +517,6 @@ const Beast = () => {
                         alignItems: 'center'
                       }}
                     >
-                      <Box sx={{ display: 'flex', flexDirection: 'row', mt: 3 }}>
-                        <TextField
-                          size='small'
-                          align='center'
-                          select
-                          label='Beast:'
-                          id='beast-select'
-                          defaultValue={beastInfo.beast}
-                          variant='outlined'
-                          type='info'
-                          helperText=''
-                          onChange={handleBeastChange}
-                        >
-                          {beastList?.map(option => (
-                            <MenuItem key={option.key} value={option.key}>
-                              {option.desc}
-                            </MenuItem>
-                          ))}
-                        </TextField>
-                        <Avatar sx={{ ml: 3 }} alt={beastInfo.beast} src={`/images/beast/${beastInfo.beast}.png`} />
-                      </Box>
                       <Box
                         sx={{
                           display: 'flex',
@@ -681,50 +526,59 @@ const Beast = () => {
                           flexWrap: 'wrap'
                         }}
                       >
-                        <Typography variant='body2' color='primary' align='right' sx={{ marginRight: '3px' }}>
-                          Set Beast Talents Limit:
-                        </Typography>
-
-                        <TextField
-                          id='talents-limit'
-                          size='small'
-                          variant='outlined'
-                          type='number'
-                          sx={{ maxWidth: '150px' }}
-                          value={beastInfo.userTalents > 0 ? beastInfo.userTalents : ''}
-                          onChange={e => {
-                            const value =
-                              +e.target.value >= totalAvailablePoints ? totalAvailablePoints : +e.target.value
-
-                            setBeastInfo(prevState => ({
-                              ...prevState,
-                              userTalents: value
-                            }))
+                        <Box>
+                          <Alert severity='warning' sx={{ m: 1 }}>
+                            There are some skills missing azurite requeriments, like Manage Food II lv3+ and Rally
+                            Decree I lv3+. If you want to help with this missing info, check CONTRIBUTORS tab.{' '}
+                          </Alert>
+                          <Alert severity='info' sx={{ m: 1 }}>
+                            Requirement azurite for College levels are not being counted, just the skills. Price is an
+                            average of 490 azurite / $8.{' '}
+                          </Alert>
+                        </Box>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            padding: '0.5em',
+                            flexWrap: 'wrap'
                           }}
-                        />
-                        <Tooltip title={'New option!'} arrow>
-                          <NewReleases color='primary' />
-                        </Tooltip>
+                        >
+                          <Typography variant='body2' color='primary' align='right' sx={{ marginRight: '3px' }}>
+                            Set AZURITE Limit:
+                          </Typography>
+
+                          <TextField
+                            id='talents-limit'
+                            size='small'
+                            variant='outlined'
+                            type='number'
+                            sx={{ maxWidth: '150px' }}
+                            value={collegeInfo.userTalents > 0 ? collegeInfo.userTalents : ''}
+                            onChange={e => {
+                              const value =
+                                +e.target.value >= totalAvailablePoints ? totalAvailablePoints : +e.target.value
+
+                              setCollegeInfo(prevState => ({
+                                ...prevState,
+                                userTalents: value
+                              }))
+                            }}
+                          />
+                        </Box>
                       </Box>
                     </Box>
                   </Box>
                   <Divider light>{<Typography variant='caption'>TREE</Typography>}</Divider>
                   <Box sx={{ minWidth: `${hideText ? '1px' : '520px'}` }}>
-                    {beastInfo.options.map(opt => {
+                    {collegeInfo.options.map(opt => {
                       if (
                         opt.type === 1 &&
-                        (opt.beast === beastInfo.beast || opt.beast === 'all' || opt.beast === 'any')
+                        (opt.beast === collegeInfo.beast || opt.beast === 'all' || opt.beast === 'any')
                       ) {
                         return (
                           <>
-                            {opt.col === 1 && opt.row === 'K' && (
-                              <>
-                                <div style={{ marginTop: '5px' }} />
-
-                                <Divider>{<Typography variant='caption'>NEW BRANCH</Typography>}</Divider>
-                                <Divider light sx={{ marginTop: '5px' }} />
-                              </>
-                            )}
                             <Grid container>
                               <Grid key={`${opt.row}-col1_empty`} item xs={3} sm={3}></Grid>
                               <Grid key={`${opt.row}-col1`} item xs={6} sm={6} sx={{ padding: '0.5rem' }}>
@@ -751,7 +605,7 @@ const Beast = () => {
                                       align='center'
                                       sx={{ marginBottom: '10px' }}
                                     >
-                                      {beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.description}
+                                      {collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)?.description}
                                     </Typography>
 
                                     <Box
@@ -767,24 +621,22 @@ const Beast = () => {
                                     >
                                       <Badge
                                         color={
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
                                             ?.counter ===
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
                                             ?.maxCounter
                                             ? 'error'
                                             : 'primary'
                                         }
                                         badgeContent={
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
                                             ?.curTotalPoints
                                         }
                                         max={50001}
                                       >
                                         <Avatar
                                           alt={`${opt.row}_${opt.col}`}
-                                          src={`/images/beast/row${opt.row}_${opt.col}_${
-                                            opt.beast === 'any' ? beastInfo.beast : opt.beast
-                                          }.png`}
+                                          src={`/images/college/row${opt.row}_${opt.col}.png`}
                                           sx={{
                                             width: theme.spacing(7),
                                             height: theme.spacing(7)
@@ -793,9 +645,9 @@ const Beast = () => {
                                       </Badge>
                                       <Typography
                                         color={
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
                                             ?.counter ===
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
                                             ?.maxCounter
                                             ? 'error'
                                             : 'primary'
@@ -805,23 +657,27 @@ const Beast = () => {
                                           marginTop: '-12px'
                                         }}
                                       >
-                                        {beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)?.counter}{' '}
+                                        {
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                            ?.counter
+                                        }{' '}
                                         /{' '}
                                         {
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
                                             ?.maxCounter
                                         }{' '}
                                       </Typography>
 
                                       {/* MAXED */}
-                                      {beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)?.counter ===
-                                        beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                      {collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                        ?.counter ===
+                                        collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
                                           ?.maxCounter && (
                                         <Typography
                                           color={
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                            collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
                                               ?.counter ===
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                            collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
                                               ?.maxCounter
                                               ? 'error'
                                               : 'primary'
@@ -829,9 +685,9 @@ const Beast = () => {
                                           variant='body2'
                                           style={{ marginTop: '1px', marginBottom: '-5px' }}
                                         >
-                                          {beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                          {collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
                                             ?.counter ===
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
                                             ?.maxCounter
                                             ? '(MAXED)'
                                             : ''}
@@ -839,8 +695,9 @@ const Beast = () => {
                                       )}
 
                                       {/* NEXT LEVEL */}
-                                      {beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)?.counter !==
-                                        beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                      {collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                        ?.counter !==
+                                        collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
                                           ?.maxCounter && (
                                         <Typography
                                           color='textPrimary'
@@ -861,9 +718,9 @@ const Beast = () => {
                                         <Button
                                           aria-label='reduce'
                                           disabled={
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                            collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
                                               ?.counter ===
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                            collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
                                               ?.minCounter
                                               ? true
                                               : false
@@ -880,9 +737,9 @@ const Beast = () => {
                                             handleIncrease(opt.row, opt.col)
                                           }}
                                           disabled={
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                            collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
                                               ?.counter ===
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                            collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
                                               ?.maxCounter
                                               ? true
                                               : false
@@ -897,9 +754,9 @@ const Beast = () => {
                                               handleIncrease(opt.row, opt.col, true)
                                             }}
                                             disabled={
-                                              beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                              collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
                                                 ?.counter ===
-                                              beastInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
+                                              collegeInfo.options?.find(o => o.row === opt.row && o.col === opt.col)
                                                 ?.maxCounter
                                                 ? true
                                                 : false
@@ -966,7 +823,7 @@ const Beast = () => {
                       } else if (
                         opt.type === 2 &&
                         opt.col === 1 &&
-                        (opt.beast === beastInfo.beast || opt.beast === 'all' || opt.beast === 'any')
+                        (opt.beast === collegeInfo.beast || opt.beast === 'all' || opt.beast === 'any')
                       ) {
                         return (
                           <>
@@ -996,7 +853,7 @@ const Beast = () => {
                                       align='center'
                                       sx={{ marginBottom: '10px' }}
                                     >
-                                      {beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.description}
+                                      {collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)?.description}
                                     </Typography>
 
                                     <Box
@@ -1012,24 +869,20 @@ const Beast = () => {
                                     >
                                       <Badge
                                         color={
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.counter ===
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.maxCounter
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)?.counter ===
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)?.maxCounter
                                             ? 'error'
                                             : 'primary'
                                         }
                                         badgeContent={
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.curTotalPoints
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)
+                                            ?.curTotalPoints
                                         }
                                         max={50001}
                                       >
                                         <Avatar
                                           alt={`${opt.row}_${opt.col}`}
-                                          src={`/images/beast/row${opt.row}_1_${
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.beast ===
-                                            'any'
-                                              ? beastInfo.beast
-                                              : opt.beast
-                                          }.png`}
+                                          src={`/images/college/row${opt.row}_1.png`}
                                           sx={{
                                             width: theme.spacing(7),
                                             height: theme.spacing(7)
@@ -1039,8 +892,8 @@ const Beast = () => {
 
                                       <Typography
                                         color={
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.counter ===
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.maxCounter
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)?.counter ===
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)?.maxCounter
                                             ? 'error'
                                             : 'primary'
                                         }
@@ -1049,33 +902,36 @@ const Beast = () => {
                                           marginTop: '-12px'
                                         }}
                                       >
-                                        {beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.counter} /{' '}
-                                        {beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.maxCounter}{' '}
+                                        {collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)?.counter} /{' '}
+                                        {collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)?.maxCounter}{' '}
                                       </Typography>
 
                                       {/* MAXED */}
-                                      {beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.counter ===
-                                        beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.maxCounter && (
+                                      {collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)?.counter ===
+                                        collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)
+                                          ?.maxCounter && (
                                         <Typography
                                           color={
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.counter ===
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.maxCounter
+                                            collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)
+                                              ?.counter ===
+                                            collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)?.maxCounter
                                               ? 'error'
                                               : 'primary'
                                           }
                                           variant='body2'
                                           style={{ marginTop: '1px', marginBottom: '-5px' }}
                                         >
-                                          {beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.counter ===
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.maxCounter
+                                          {collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)?.counter ===
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)?.maxCounter
                                             ? '(MAXED)'
                                             : ''}
                                         </Typography>
                                       )}
 
                                       {/* NEXT LEVEL */}
-                                      {beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.counter !==
-                                        beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.maxCounter && (
+                                      {collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)?.counter !==
+                                        collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)
+                                          ?.maxCounter && (
                                         <Typography
                                           color='textPrimary'
                                           variant='caption'
@@ -1094,8 +950,9 @@ const Beast = () => {
                                         <Button
                                           aria-label='reduce'
                                           disabled={
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.counter ===
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.minCounter
+                                            collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)
+                                              ?.counter ===
+                                            collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)?.minCounter
                                               ? true
                                               : false
                                           }
@@ -1111,8 +968,9 @@ const Beast = () => {
                                             handleIncrease(opt.row, 1)
                                           }}
                                           disabled={
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.counter ===
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.maxCounter
+                                            collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)
+                                              ?.counter ===
+                                            collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)?.maxCounter
                                               ? true
                                               : false
                                           }
@@ -1126,9 +984,10 @@ const Beast = () => {
                                               handleIncrease(opt.row, 1, true)
                                             }}
                                             disabled={
-                                              beastInfo.options?.find(o => o.row === opt.row && o.col === 1)
+                                              collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)
                                                 ?.counter ===
-                                              beastInfo.options?.find(o => o.row === opt.row && o.col === 1)?.maxCounter
+                                              collegeInfo.options?.find(o => o.row === opt.row && o.col === 1)
+                                                ?.maxCounter
                                                 ? true
                                                 : false
                                             }
@@ -1211,7 +1070,7 @@ const Beast = () => {
                                       align='center'
                                       sx={{ marginBottom: '10px' }}
                                     >
-                                      {beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.description}
+                                      {collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)?.description}
                                     </Typography>
 
                                     <Box
@@ -1227,24 +1086,20 @@ const Beast = () => {
                                     >
                                       <Badge
                                         color={
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.counter ===
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.maxCounter
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)?.counter ===
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)?.maxCounter
                                             ? 'error'
                                             : 'primary'
                                         }
                                         badgeContent={
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.curTotalPoints
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)
+                                            ?.curTotalPoints
                                         }
                                         max={50001}
                                       >
                                         <Avatar
                                           alt={`${opt.row}_${opt.col}`}
-                                          src={`/images/beast/row${opt.row}_2_${
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.beast ===
-                                            'all'
-                                              ? beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.beast
-                                              : beastInfo.beast
-                                          }.png`}
+                                          src={`/images/college/row${opt.row}_2.png`}
                                           sx={{
                                             width: theme.spacing(7),
                                             height: theme.spacing(7)
@@ -1254,8 +1109,8 @@ const Beast = () => {
 
                                       <Typography
                                         color={
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.counter ===
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.maxCounter
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)?.counter ===
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)?.maxCounter
                                             ? 'error'
                                             : 'primary'
                                         }
@@ -1264,33 +1119,36 @@ const Beast = () => {
                                           marginTop: '-12px'
                                         }}
                                       >
-                                        {beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.counter} /{' '}
-                                        {beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.maxCounter}{' '}
+                                        {collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)?.counter} /{' '}
+                                        {collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)?.maxCounter}{' '}
                                       </Typography>
 
                                       {/* MAXED */}
-                                      {beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.counter ===
-                                        beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.maxCounter && (
+                                      {collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)?.counter ===
+                                        collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)
+                                          ?.maxCounter && (
                                         <Typography
                                           color={
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.counter ===
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.maxCounter
+                                            collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)
+                                              ?.counter ===
+                                            collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)?.maxCounter
                                               ? 'error'
                                               : 'primary'
                                           }
                                           variant='body2'
                                           style={{ marginTop: '1px', marginBottom: '-5px' }}
                                         >
-                                          {beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.counter ===
-                                          beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.maxCounter
+                                          {collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)?.counter ===
+                                          collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)?.maxCounter
                                             ? '(MAXED)'
                                             : ''}
                                         </Typography>
                                       )}
 
                                       {/* NEXT LEVEL */}
-                                      {beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.counter !==
-                                        beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.maxCounter && (
+                                      {collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)?.counter !==
+                                        collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)
+                                          ?.maxCounter && (
                                         <Typography
                                           color='textPrimary'
                                           variant='caption'
@@ -1298,12 +1156,12 @@ const Beast = () => {
                                         >
                                           NEXT LVL: +
                                           {
-                                            beastInfo.options
+                                            collegeInfo.options
                                               ?.find(o => o.row === opt.row && o.col === 2)
                                               .levels?.find(
                                                 l =>
                                                   l.level ===
-                                                  beastInfo.options?.find(o => o.row === opt.row && o.col === 2)
+                                                  collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)
                                                     .counter +
                                                     1
                                               )?.points
@@ -1321,8 +1179,9 @@ const Beast = () => {
                                         <Button
                                           aria-label='reduce'
                                           disabled={
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.counter ===
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.minCounter
+                                            collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)
+                                              ?.counter ===
+                                            collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)?.minCounter
                                               ? true
                                               : false
                                           }
@@ -1338,8 +1197,9 @@ const Beast = () => {
                                             handleIncrease(opt.row, 2)
                                           }}
                                           disabled={
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.counter ===
-                                            beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.maxCounter
+                                            collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)
+                                              ?.counter ===
+                                            collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)?.maxCounter
                                               ? true
                                               : false
                                           }
@@ -1353,9 +1213,10 @@ const Beast = () => {
                                               handleIncrease(opt.row, 2, true)
                                             }}
                                             disabled={
-                                              beastInfo.options?.find(o => o.row === opt.row && o.col === 2)
+                                              collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)
                                                 ?.counter ===
-                                              beastInfo.options?.find(o => o.row === opt.row && o.col === 2)?.maxCounter
+                                              collegeInfo.options?.find(o => o.row === opt.row && o.col === 2)
+                                                ?.maxCounter
                                                 ? true
                                                 : false
                                             }
@@ -1420,9 +1281,11 @@ const Beast = () => {
                       }
                     })}
                   </Box>
-                  {totalPoints > 0 && <Divider light>SELECTED TALENTS SKILLS</Divider>}
+                  {totalPoints > 0 && (
+                    <Divider light>{<Typography variant='caption'>SELECTED TALENTS</Typography>}</Divider>
+                  )}
                   <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', maxWidth: '450px' }}>
-                    {[...beastInfo.options].map(opt => {
+                    {[...collegeInfo.options].map(opt => {
                       if (opt.counter > 0) {
                         let statDescription = { text: opt.statText }
                         opt.levels[opt.counter - 1].stat.forEach((s, i) => {
@@ -1436,9 +1299,7 @@ const Beast = () => {
                               <ListItemAvatar>
                                 <Avatar
                                   alt={`${opt.row}_${opt.col}`}
-                                  src={`/images/beast/row${opt.row}_${opt.col}_${
-                                    opt.beast === 'all' ? 'all' : beastInfo.beast
-                                  }.png`}
+                                  src={`/images/college/row${opt.row}_${opt.col}.png`}
                                 />
                               </ListItemAvatar>
                               <ListItemText
@@ -1474,8 +1335,8 @@ const Beast = () => {
                 </Typography>
                 <Typography variant='body1' align='right' style={{ minWidth: '' }}>
                   {`${
-                    beastInfo.userTalents > 0
-                      ? (beastInfo.userTalents - totalPoints).toLocaleString()
+                    collegeInfo.userTalents > 0
+                      ? (collegeInfo.userTalents - totalPoints).toLocaleString()
                       : (totalAvailablePoints - totalPoints).toLocaleString()
                   }`}
                 </Typography>
@@ -1497,8 +1358,8 @@ const Beast = () => {
                 }}
                 onClick={handleFillAll}
                 disabled={
-                  beastInfo.userTalents > 0
-                    ? beastInfo.userTalents - totalPoints <= 0
+                  collegeInfo.userTalents > 0
+                    ? collegeInfo.userTalents - totalPoints <= 0
                       ? true
                       : false
                     : totalAvailablePoints - totalPoints <= 0
@@ -1542,256 +1403,6 @@ const Beast = () => {
           </AppBar>
         </Card>
       </>
-    ),
-    skills: (
-      <>
-        <Card>
-          <Box sx={{ flexGrow: 1 }}>
-            <Snackbar
-              open={snackOpen.open}
-              autoHideDuration={snackOpen.time ?? 6000}
-              onClose={snackClose}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-            >
-              {snackOpen.open && (
-                <Alert variant='filled' onClose={snackClose} severity={snackOpen.type}>
-                  <AlertTitle>{snackOpen.type === 'success' ? 'Done!' : 'Info:'}</AlertTitle>
-                  {snackOpen.open}
-                </Alert>
-              )}
-            </Snackbar>
-            <Grid container spacing={2} sx={{ padding: '0.5em' }}>
-              <Grid item xs={12}>
-                <Paper elevation={24}>
-                  <Typography
-                    align='center'
-                    variant='h6'
-                    color='primary'
-                    sx={{ paddingTop: '0.5em', paddingBottom: '0.5em' }}
-                  >
-                    BEAST PASSIVE SKILLS SIMULATOR
-                  </Typography>
-                  <Divider>{<Typography variant='caption'>SETUP</Typography>}</Divider>
-                  <Box
-                    sx={{
-                      padding: '0.8em',
-                      display: 'flex',
-                      flexDirection: 'column'
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        flexWrap: 'wrap',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <TextField
-                        align='center'
-                        id='beast-skill-template-select'
-                        size='small'
-                        variant='outlined'
-                        label='Presets'
-                        select
-                        sx={{ minWidth: '200px', mt: 3 }}
-                        value={skillTemplate}
-                        onChange={handleBeastSkillChangeTemplate}
-                      >
-                        {beastSkillsTemplates?.map(option => (
-                          <MenuItem key={option.k} value={option.k}>
-                            {option.desc}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </Box>
-                  </Box>
-                  <Divider>{<Typography variant='caption'>SKILLS SLOTS</Typography>}</Divider>
-                  <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-                    {slotLevel?.map((slot, index) => {
-                      return (
-                        <>
-                          <Grid item xs={12} md={3} lg={3} sm={12} sx={{ padding: '1.5em' }}>
-                            <Paper
-                              elevation={24}
-                              sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                              }}
-                            >
-                              <Avatar
-                                alt={slot.key}
-                                src={`/images/beast_skills/${slot.skill?.key}.png`}
-                                sx={{
-                                  width: theme.spacing(7),
-                                  height: theme.spacing(7),
-                                  marginTop: '10px'
-                                }}
-                              >
-                                {slot?.key === 1 && <LooksOne />}
-                                {slot?.key === 2 && <LooksTwo />}
-                                {slot?.key === 3 && <Looks3 />}
-                                {slot?.key === 4 && <Looks4 />}
-                              </Avatar>
-                              <Divider flexItem light variant='middle' sx={{ margin: '5px' }} />
-                              <Box>
-                                <TextField
-                                  align='center'
-                                  select
-                                  size='small'
-                                  label={`SLOT #${slot.key}`}
-                                  id={'slot-select-' + slot.key}
-                                  variant='outlined'
-                                  type='info'
-                                  helperText=''
-                                  value={slotLevel[index].skill?.key ?? ''}
-                                  sx={{ margin: theme.spacing(1), width: '15ch' }}
-                                  onChange={e => {
-                                    handleBeastSkillChange(e, slot.key)
-                                  }}
-                                >
-                                  <ListSubheader>WAR</ListSubheader>
-
-                                  {beastSkillList
-                                    ?.filter(f => f.group === 'WAR')
-                                    ?.map(option => (
-                                      <MenuItem key={option.key} value={option.key}>
-                                        {option.desc}
-                                      </MenuItem>
-                                    ))}
-                                  <ListSubheader>Development</ListSubheader>
-                                  {beastSkillList
-                                    ?.filter(f => f.group === 'Development')
-                                    ?.map(option => (
-                                      <MenuItem key={option.key} value={option.key}>
-                                        {option.desc}
-                                      </MenuItem>
-                                    ))}
-                                  <ListSubheader>Misc</ListSubheader>
-                                  {beastSkillList
-                                    ?.filter(f => f.group === 'Misc')
-                                    ?.map(option => (
-                                      <MenuItem key={option.key} value={option.key}>
-                                        {option.desc}
-                                      </MenuItem>
-                                    ))}
-                                </TextField>
-                                <Divider flexItem light />
-                                <Typography variant='body1' color='primary' align='center'>
-                                  Level:
-                                </Typography>
-                                <Typography variant='h5' color='secondary' align='center'>
-                                  {slot.level}
-                                </Typography>
-                              </Box>
-                              <Divider flexItem light variant='middle' sx={{ margin: '5px' }} />
-
-                              <ButtonGroup color='primary' size='small' sx={{ mt: 1, mb: 3 }}>
-                                <Tooltip title='Decrease 1 level.'>
-                                  <Button
-                                    color='secondary'
-                                    aria-label='reduce'
-                                    disabled={slot?.skill?.key?.length > 0 ? false : true}
-                                    onClick={e => {
-                                      handleDrecreaseBeastSkillChange(slot.key)
-                                    }}
-                                  >
-                                    <RemoveSharp fontSize='small' />
-                                  </Button>
-                                </Tooltip>
-                                <Tooltip title='Increase 1 level.'>
-                                  <Button
-                                    aria-label='increase'
-                                    disabled={slot?.skill?.key?.length > 0 ? false : true}
-                                    onClick={e => {
-                                      handleIncreaseBeastSkillChange(slot.key)
-                                    }}
-                                  >
-                                    <AddSharp fontSize='small' />
-                                  </Button>
-                                </Tooltip>
-                                <Tooltip title='Set Max Level'>
-                                  <Button
-                                    aria-label='increase'
-                                    disabled={slot?.skill?.key?.length > 0 ? false : true}
-                                    onClick={e => {
-                                      handleIncreaseBeastSkillAll(slot.key, 30)
-                                    }}
-                                  >
-                                    <LibraryAdd fontSize='small' />
-                                  </Button>
-                                </Tooltip>
-                              </ButtonGroup>
-                            </Paper>
-                          </Grid>
-                        </>
-                      )
-                    })}
-                  </Box>
-                  {(slotLevel[0].skill?.key?.length > 0 ||
-                    slotLevel[1].skill?.key?.length > 0 ||
-                    slotLevel[2].skill?.key?.length > 0 ||
-                    slotLevel[3].skill?.key?.length > 0) && (
-                    <Divider>{<Typography variant='caption'>SELECTED SKILLS</Typography>}</Divider>
-                  )}
-                  <Box>
-                    {slotLevel?.map(opt => {
-                      let statDescription = { text: opt?.skill?.info }
-
-                      const newStat =
-                        opt?.level === 1
-                          ? opt?.skill?.statInit
-                          : opt?.skill?.statInit + opt?.skill?.statInc * (opt?.level - 1)
-                      statDescription.text = statDescription.text?.replace('$1', newStat.toFixed(1))
-
-                      if (opt?.skill?.key?.length > 0) {
-                        return (
-                          <List key={opt.key}>
-                            <ListItem>
-                              <ListItemAvatar>
-                                <Avatar
-                                  alt={`${opt.key}`}
-                                  src={`/images/beast_skills/${opt?.skill?.key}.png`}
-                                  sx={{
-                                    width: theme.spacing(5),
-                                    height: theme.spacing(5)
-                                  }}
-                                />
-                              </ListItemAvatar>
-                              <ListItemText
-                                primaryTypographyProps={{ color: 'primary' }}
-                                primary={`Skill #${opt?.key} - ${opt?.skill?.desc} - Lv${opt?.level}`}
-                                secondary={`${statDescription.text}  Requirements: ${
-                                  opt?.requeriments
-                                } Total Experience needed: ${opt.expNeeded.toLocaleString()}. Total Scrolls needed from Lv1: ${Math.round(
-                                  opt.expNeeded / 50
-                                ).toLocaleString()}. ${
-                                  opt?.level < 30
-                                    ? `Scrolls needed for next level (${
-                                        opt?.level !== 30 ? opt?.level + 1 : '30'
-                                      }): ${Math.round(
-                                        beastSkills?.skillLevel?.find(
-                                          lvl => lvl.level === (opt?.level !== 30 ? opt?.level + 1 : 30)
-                                        ).exp / 50
-                                      ).toLocaleString()}`
-                                    : ''
-                                } `}
-                              />
-                            </ListItem>
-                          </List>
-                        )
-                      }
-                    })}
-                  </Box>
-                </Paper>
-              </Grid>
-            </Grid>
-          </Box>
-        </Card>
-      </>
     )
   }
 
@@ -1800,60 +1411,21 @@ const Beast = () => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Card>
-            <CustomHeader icon='beast' title='BEAST' />
+            <CustomHeader icon='college' title='HIGH COLLEGE SIMULATOR' />
           </Card>
         </Grid>
 
-        {activeTab === undefined ? null : (
-          <Grid item xs={12}>
-            <TabContext value={activeTab}>
-              <Grid container spacing={6}>
-                <Grid item xs={12}>
-                  <TabList
-                    variant='scrollable'
-                    scrollButtons='auto'
-                    onChange={handleChange}
-                    aria-label='customized tabs'
-                  >
-                    <Tab
-                      value='talents'
-                      label={
-                        <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 2 } }) }}>
-                          <Icon fontSize={20} icon='game-icons:black-book' />
-                          {'Talents'}
-                        </Box>
-                      }
-                    />
-                    <Tab
-                      value='skills'
-                      label={
-                        <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 2 } }) }}>
-                          <Icon fontSize={20} icon='game-icons:book-aura' />
-                          {'Skills'}
-                        </Box>
-                      }
-                    />
-                  </TabList>
-                </Grid>
-                <Grid item xs={12} sx={{ pt: theme => `${theme.spacing(4)} !important` }}>
-                  {isLoading ? (
-                    <Box sx={{ mt: 6, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                      <CircularProgress sx={{ mb: 4 }} />
-                      <Typography>Loading...</Typography>
-                    </Box>
-                  ) : (
-                    <TabPanel sx={{ p: 0 }} value={activeTab}>
-                      {tabContentList[activeTab]}
-                    </TabPanel>
-                  )}
-                </Grid>
-              </Grid>
-            </TabContext>
+        <Grid item xs={12}>
+          <Grid container spacing={6}>
+            <Grid item xs={12}></Grid>
+            <Grid item xs={12} sx={{ pt: theme => `${theme.spacing(4)} !important` }}>
+              {tabContentList[activeTab]}
+            </Grid>
           </Grid>
-        )}
+        </Grid>
       </Grid>
     </>
   )
 }
 
-export default Beast
+export default HighCollege
