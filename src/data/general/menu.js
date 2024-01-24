@@ -1,4 +1,4 @@
-export const menuList = [
+export const menuList = Object.freeze([
   {
     text: 'planner',
     desc: 'Planner',
@@ -128,4 +128,4 @@ export const menuList = [
     icon: 'mdi:help-outline',
     subModule: [{ name: '- Creator' }, { name: '- Contributors' }, { name: '- Supporters' }]
   }
-]
+])

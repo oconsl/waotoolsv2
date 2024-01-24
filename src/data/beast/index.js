@@ -1,11 +1,11 @@
-export const beastList = [
+export const beastList = Object.freeze([
   { key: 'dragon', desc: 'Dragon', img: '', info: '' },
   { key: 'panda', desc: 'Panda', img: '', info: '' },
   { key: 'pegasus', desc: 'Pegasus', img: '', info: '' },
   { key: 'phoenix', desc: 'Phoenix', img: '', info: '' }
-]
+])
 
-export const beastSkillsTemplates = [
+export const beastSkillsTemplates = Object.freeze([
   { k: 1, desc: 'Anti Cav / Archer', skills: ['antiCavalry', 'forceExpansion', 'steelSkin', 'antiInfantry'] },
   { k: 2, desc: 'Anti Cav / Mage', skills: ['antiCavalry', 'forceExpansion', 'resistMagic', 'antiInfantry'] },
   { k: 3, desc: 'Anti Inf / Archer', skills: ['antiInfantry', 'forceExpansion', 'steelSkin', 'antiCavalry'] },
@@ -19,9 +19,9 @@ export const beastSkillsTemplates = [
   { k: 11, desc: 'PvE', skills: ['attackExpert', 'lifeSource', 'forceExpansion', ''] },
   { k: 12, desc: 'WAR', skills: ['forceExpansion', 'antiCavalry', 'antiInfantry', 'resistMagic'] },
   { k: 13, desc: 'Wounded - Healing', skills: ['woundedLimit', 'woundedConversion', 'quickHeal', ''] }
-]
+])
 
-export const beastSkills = {
+export const beastSkills = Object.freeze({
   slots: [
     {
       key: 1,
@@ -221,9 +221,9 @@ export const beastSkills = {
       statInc: 1
     }
   ]
-}
+})
 
-export const dataOptions = [
+export const dataOptions = Object.freeze([
   {
     row: 'A',
     col: 1,
@@ -1318,4 +1318,4 @@ export const dataOptions = [
       { level: 15, points: 5780, stat: [10.5] }
     ]
   }
-]
+])

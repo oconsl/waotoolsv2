@@ -1,4 +1,4 @@
-export const troopsTemplates = [
+export const troopsTemplates = Object.freeze([
   {
     act: 'anubis',
     setup: 'evenCavMages',
@@ -758,4 +758,4 @@ export const troopsTemplates = [
     oddMageTier: 13,
     oddMage: 255000
   }
-]
+])

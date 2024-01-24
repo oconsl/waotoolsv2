@@ -1,4 +1,4 @@
-export const recruitmentConfig = {
+export const recruitmentConfig = Object.freeze({
   default: {
     recruitmentSpeed: 0,
     troopsPerBatch: 0,
@@ -37,9 +37,9 @@ export const recruitmentConfig = {
     profiles: [{ value: 'default' }, { value: 'player' }],
     mode: [{ value: 'custom' }, { value: 'player (soon)' }]
   }
-}
+})
 
-export const defaultConfig = {
+export const defaultConfig = Object.freeze({
   recruitmentSpeed: 247.7,
   allianceSkillBuff: 0,
   kingBuff: 0,
@@ -59,17 +59,17 @@ export const defaultConfig = {
     12: 73.206,
     13: 87.343
   }
-}
+})
 
-export const defaultTierDiff = {
+export const defaultTierDiff = Object.freeze({
   14: 1.3988417259
-}
+})
 
-export const defaultTierDiffGems = {
+export const defaultTierDiffGems = Object.freeze({
   14: 1.3695620394
-}
+})
 
-export const recruitmentTemplates = [
+export const recruitmentTemplates = Object.freeze([
   {
     recruitmentSpeed: 247.7,
     allianceSkillBuff: 0,
@@ -410,9 +410,9 @@ export const recruitmentTemplates = [
       13: 137.305
     }
   }
-]
+])
 
-export const troopsConf = {
+export const troopsConf = Object.freeze({
   troopsRecruitmentRSS: {
     infantry: {
       1: { f: 60, w: 0, s: 0, i: 0 },
@@ -479,4 +479,4 @@ export const troopsConf = {
       14: { f: 1100, w: 440, s: 114, i: 43 }
     }
   }
-}
+})

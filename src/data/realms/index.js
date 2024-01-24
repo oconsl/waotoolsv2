@@ -1,4 +1,4 @@
-export const mergeList = [
+export const mergeList = Object.freeze([
   {
     primaryRealm: 3,
     realmsMerged: [3, 14, 17, 22, 23, 24, 46, 47, 55, 57, 60, 65, 76, 79, 82, 88, 89, 138],
@@ -685,9 +685,9 @@ export const mergeList = [
   { primaryRealm: 1663, realmsMerged: [], top3: [], lastMerge: '' },
   { primaryRealm: 1664, realmsMerged: [], top3: [], lastMerge: '' },
   { primaryRealm: 1665, realmsMerged: [], top3: [], lastMerge: '' }
-]
+])
 
-export const globeList = [
+export const globeList = Object.freeze([
   { globe: 1, from: 1, to: 87, color: '#02a6e8' },
   { globe: 2, from: 88, to: 174, color: '#fcc006' },
   { globe: 3, from: 175, to: 261, color: '#93d154' },
@@ -707,4 +707,4 @@ export const globeList = [
   { globe: 17, from: 1393, to: 1479, color: '#73b02f' },
   { globe: 18, from: 1480, to: 1566, color: '#7b7b7b' },
   { globe: 19, from: 1567, to: 1625, color: '#538ed2' }
-]
+])

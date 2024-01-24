@@ -1,4 +1,4 @@
-export const infoData = [
+export const infoData = Object.freeze([
   {
     slot: 1,
     key: 'obsidian',
@@ -790,4 +790,4 @@ export const infoData = [
       { level: '6', quantity: 140, info: '700' }
     ]
   }
-]
+])

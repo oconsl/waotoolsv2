@@ -1,4 +1,4 @@
-export const colossusExp = [
+export const colossusExp = Object.freeze([
   { level: 1, c: 5, ar: 0 },
   { level: 2, c: 10, ar: 0 },
   { level: 3, c: 25, ar: 0 },
@@ -24,9 +24,9 @@ export const colossusExp = [
   { level: 23, c: 3000, ar: 0 },
   { level: 24, c: 3200, ar: 0 },
   { level: 25, c: 3400, ar: 0 }
-]
+])
 
-export const colossusSlots = [
+export const colossusSlots = Object.freeze([
   {
     slot: 1,
     troop: '',
@@ -57,9 +57,9 @@ export const colossusSlots = [
       { key: 6, level: 0, c: 0, ar: 0 }
     ]
   }
-]
+])
 
-export const colossusAbilityStatsLevel = {
+export const colossusAbilityStatsLevel = Object.freeze({
   abilityStatsDetA: [
     { level: 1, stat: 0.5 },
     { level: 2, stat: 0.8 },
@@ -114,9 +114,9 @@ export const colossusAbilityStatsLevel = {
     { level: 24, stat: 14.2 },
     { level: 25, stat: 15 }
   ]
-}
+})
 
-export const colossusTroopsConf = [
+export const colossusTroopsConf = Object.freeze([
   {
     troop: 'cavalry',
     desc: 'Cavalry',
@@ -197,9 +197,9 @@ export const colossusTroopsConf = [
       { abilityLevel: 6, level: 200, stat: '', statDesc: '' }
     ]
   }
-]
+])
 
-export const colossusLevelTemplates = [
+export const colossusLevelTemplates = Object.freeze([
   {
     template: 50,
     abilities: [
@@ -266,4 +266,4 @@ export const colossusLevelTemplates = [
       { key: 6, level: 25 }
     ]
   }
-]
+])

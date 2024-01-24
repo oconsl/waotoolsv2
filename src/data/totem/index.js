@@ -1,4 +1,4 @@
-export const totemList = [
+export const totemList = Object.freeze([
   {
     quality: 'blue',
     key: 'fertility',
@@ -108,9 +108,9 @@ export const totemList = [
     skillStats: [],
     skillLevels: []
   }
-]
+])
 
-export const totemStats = {
+export const totemStats = Object.freeze({
   fertility: [
     { node: 1, level: 1, stones: 50, statDesc: 'Archer HP', stat: 0.6 },
     { node: 1, level: 2, stones: 50, statDesc: 'Archer HP', stat: 0.6 },
@@ -3067,9 +3067,9 @@ export const totemStats = {
     { node: 3, level: 149, stones: 1450, statDesc: 'Damage Boost when attacking', stat: 0.4 },
     { node: 3, level: 150, stones: 1450, statDesc: 'Damage Boost when attacking', stat: 0.4 }
   ]
-}
+})
 
-export const totemSkill = {
+export const totemSkill = Object.freeze({
   blue: [
     { level: 1, quantity: 150 },
     { level: 2, quantity: 175 },
@@ -3146,9 +3146,9 @@ export const totemSkill = {
     { level: 29, quantity: 850 },
     { level: 30, quantity: 1000 }
   ]
-}
+})
 
-export const totemStones = {
+export const totemStones = Object.freeze({
   blue: [
     { level: 1, quantity: 50 },
     { level: 2, quantity: 50 },
@@ -4175,9 +4175,9 @@ export const totemStones = {
     { level: 449, quantity: 1450 },
     { level: 450, quantity: 1450 }
   ]
-}
+})
 
-export const totemInfo = {
+export const totemInfo = Object.freeze({
   stone: {
     blue: { avgPrice: { qty: 350, p: 4.99 } },
     purple: { avgPrice: { qty: 180, p: 4.99 } },
@@ -4188,9 +4188,9 @@ export const totemInfo = {
     purple: { avgPrice: { qty: 25, p: 4.99 } },
     gold: { avgPrice: { qty: 6, p: 9.99 } }
   }
-}
+})
 
-export const totemTemplates = [
+export const totemTemplates = Object.freeze([
   {
     key: 'blueToPurpleR',
     desc: 'Blue to Purple (Recomended)',
@@ -4242,16 +4242,16 @@ export const totemTemplates = [
     desc: 'Purple lv450 to Gold (Stones Equivalent)',
     config: { blueLevel: 0, purpleLevel: 450, goldLevel: 271 }
   }
-]
+])
 
-export const totemConf = {
+export const totemConf = Object.freeze({
   levelType: [
     { value: 1, desc: 'Auto' },
     { value: 2, desc: 'Custom' }
   ]
-}
+})
 
-export const totemSlots = [
+export const totemSlots = Object.freeze([
   {
     slot: 1,
     quality: 'blue',
@@ -4288,9 +4288,9 @@ export const totemSlots = [
     scrolls: 0,
     nodes: { 1: 0, 2: 0, 3: 0 }
   }
-]
+])
 
-export const totemRewards = [
+export const totemRewards = Object.freeze([
   { event: 'daily', group: 'nrs', type: 'Normal Runestones', qty: 25, times: 10 },
   { event: 'weekly', group: 'nrs', type: 'Normal Runestones', qty: 75, times: 1 },
   { event: 'daily', group: 'bpt', type: 'Blue Psionic Tattoo', qty: 1, times: 10 },
@@ -4306,4 +4306,4 @@ export const totemRewards = [
   },
   { event: 'weekly', group: 'srs', type: 'Superior Runestones', qty: 10, times: 2, desc: 'Oracle Shop' },
   { event: 'weekly', group: 'ppt', type: 'Purple Psionic Tattoo', qty: 3, times: 1, desc: 'Oracle Shop' }
-]
+])

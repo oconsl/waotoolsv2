@@ -1,4 +1,4 @@
-export const buildingList = [
+export const buildingList = Object.freeze([
   {
     type: 'Building',
     building: 'barracks',
@@ -3908,9 +3908,9 @@ export const buildingList = [
     rss: { f: 84200000, w: 19300000, s: 7800000, i: 5400000, a: 50000 },
     requirements: [{ type: 'Building', building: 'sacredCastle', level: 1 }]
   }
-]
+])
 
-export const itemTemplates = [
+export const itemTemplates = Object.freeze([
   {
     template: 'c31toc40',
     desc: 'c31 to c40 w Angels T12',
@@ -4485,9 +4485,9 @@ export const itemTemplates = [
       { building: 'sacredBarrack', level: 3 }
     ]
   }
-]
+])
 
-export const extraBarracks = [
+export const extraBarracks = Object.freeze([
   {
     template: 'b31tob34',
     desc: 'Barracks 31 to 34',
@@ -4561,9 +4561,9 @@ export const extraBarracks = [
       { building: 'sacredBarrack', level: 3 }
     ]
   }
-]
+])
 
-export const azuCalcConf = {
+export const azuCalcConf = Object.freeze({
   royalChallenge: [
     { level: 0, azurite: 0 },
     { level: 1, azurite: 45 },
@@ -4586,4 +4586,4 @@ export const azuCalcConf = {
     { level: 5, azurite: 100 }
   ],
   card: 90
-}
+})
